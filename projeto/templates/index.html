@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" href="{{ url_for('static', filename='fav.png') }}" type="image/png">
+    <title>TimbuMuscle</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-esquerda">
+                <h1>TimbuMuscle</h1>
+                <a href="/">HOME</a>
+                <a href="/sobre">SOBRE</a>
+            </div>
+            <div class="nav-direita">
+                <a class="botao-login" href="/login">LOGIN</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="template">
+            <div class="bem-vindo">
+                <h1>BEM-VINDO AO TIMBUMUSCLE</h1>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/b6CbIpgN6GA?si=fxf_lSvxTep50Luj"></iframe>
+                <h2>Treinos Personalizados para Você Alcançar o Máximo Desempenho</h2>
+                <p>Rotinas únicas, resultados reais. Seu treino do seu jeito.</p>
+            </div>
+                
+                <div class="motivos">
+                    <h2 class="motivos-titulo">POR QUE USAR O TIMBUMUSCLE?</h2>
+
+                    <div class="motivos-container">
+                        <div class="motivo-card">
+                            <h3><i class="fas fa-user-check"></i> Perfil de treino próprio 🎯</h3>
+                            <p>Com o TimbuMuscle, você tem um perfil exclusivo que considera seus objetivos, nível de experiência, tempo disponível e preferências.</p>
+                        </div>
+
+                        <div class="motivo-card">
+                            <h3><i class="fas fa-dumbbell"></i> Plano sob medida 🧠</h3>
+                            <p>Nosso sistema monta um plano inteligente com base nos seus dados. Cada exercício é pensado para garantir evolução real.</p>
+                        </div>
+
+                        <div class="motivo-card">
+                            <h3><i class="fas fa-chart-bar"></i> Acompanhe seu progresso 💪</h3>
+                            <p>Registre cargas, repetições, medidas corporais e veja sua evolução ao longo do tempo. Motivação garantida!</p>
+                        </div>
+
+                        <div class="motivo-card">
+                            <h3><i class="fas fa-sync-alt"></i> Ajustes automáticos 📈</h3>
+                            <p>O treino evolui com você! O TimbuMuscle ajusta automaticamente o plano com base no seu desempenho.</p>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="diferenciais">
+
+                <h2>DIFERENCIAIS</h2>
+
+                <h3><i class="fas fa-calendar-alt"></i> Calendário de treinos</h3>
+                <p>Nosso site contém um calendário de treino único com daily streak (sequência diária) para incentivar nossos usuários.</p>
+
+                <h3><i class="fas fa-chart-line"></i> Acompanhamento de evolução</h3>
+                <p>Com o acompanhamento de evolução você receberá treino com base no seu nível de força, ajudando a manter o ritmo e ter uma evolução.</p>
+
+                <h3><i class="fas fa-video"></i> Exercícios com vídeos curtos</h3>
+                <p>Não adianta nada ter o treino sem saber o que vai fazer. Por isso, nosso site contará com vídeos ensinando passo a passo a execução.</p>
+            
+            </div>
+
+            <div>
+                <a class="button-comercial" href="/login">Comece agora grátis</a>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>
