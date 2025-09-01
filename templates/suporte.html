@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
+    <title>TimbuMuscle</title>
+    <style>
+        .option {
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-esquerda">
+                <h1>TimbuMuscle</h1>
+                <a href="{{ url_for('usuarios', key=key) }}">HOME</a>
+                <a href="{{ url_for('mostrar_treinos', key=key) }}">TREINOS</a>
+                <a href="{{ url_for('suporte', key=key) }}">SUPORTE</a>
+            </div>
+            <div class="nav-direita-normal">
+                <a href="{{ url_for('perfil', key=key) }}">PERFIL</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="login-section">
+        <div class="login-options">
+            <div class="option" onclick="window.location.href='{{ url_for('chat_personal', key=key, tipo='personal') }}'">
+                <img style="width: 250px; height: 300px;" src="{{ url_for('static', filename='image/personal.png') }}" alt="">
+                <h2>Personal</h2>
+            </div>
+            <div class="option" onclick="window.location.href='{{ url_for('chat_nutri', key=key, tipo='nutricionista') }}'">
+                <img style="width: 250px; height: 300px;" src="{{ url_for('static', filename='image/nutri.png') }}" alt="">
+                <h2>Nutricionista</h2>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Opcional: Adiciona efeito de clique visual
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                this.style.transform = 'translateY(2px)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-5px)';
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>

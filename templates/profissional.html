@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimbuMuscle - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style3.css') }}">
+</head>
+<body data-key="{{ key }}">
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1>TimbuMuscle</h1>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="{{ url_for('profissional', key=key) }}" class="nav-item active">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-users"></i> Alunos
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-dumbbell"></i> Treinos
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-chart-line"></i> Progresso
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-comment-medical"></i> Suporte
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-utensils"></i> Dietas
+                </a>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">{{ user.nome[0] }}</div>
+                <div>
+                    <div>{{ user.nome }}</div>
+                    <small>Profissional</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h2 class="page-title">Dashboard do Profissional</h2>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Pesquisar aluno..." id="searchInput">
+                </div>
+            </div>
+            
+            <!-- Dashboard Stats -->
+            <div class="dashboard-cards" id="statsContainer">
+                <!-- Será preenchido via JavaScript -->
+            </div>
+            
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" onclick="filtrarAlunos('todos')">Todos os Alunos</div>
+                <div class="tab" onclick="filtrarAlunos('ativos')">Com Treinos Ativos</div>
+                <div class="tab" onclick="filtrarAlunos('inativos')">Precisam de Acompanhamento</div>
+            </div>
+            
+            <!-- Students Table -->
+            <div class="table-container">
+                <table id="alunosTable">
+                    <thead>
+                        <tr>
+                            <th>Aluno</th>
+                            <th>Treino Atual</th>
+                            <th>Último Acesso</th>
+                            <th>Progresso</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="alunosBody">
+                        <!-- Será preenchido via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const key = document.body.dataset.key;
+
+        // Carregar dados ao iniciar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarEstatisticas();
+            carregarAlunos();
+        });
+    </script>
+
+    <script>
+        
+
+        async function carregarEstatisticas() {
+            try {
+                const response = await fetch('/api/estatisticas');
+                const data = await response.json();
+                
+                document.getElementById('statsContainer').innerHTML = `
+                    <div class="card stat-card">
+                        <div class="stat-icon icon-primary">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>${data.alunos_ativos}</h3>
+                            <p>Alunos Ativos</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card stat-card">
+                        <div class="stat-icon icon-secondary">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>${data.treinos_ativos}</h3>
+                            <p>Treinos em Andamento</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card stat-card">
+                        <div class="stat-icon icon-accent">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>${data.alunos_inativos}</h3>
+                            <p>Alunos Inativos</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card stat-card">
+                        <div class="stat-icon icon-primary">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>${data.chats_ativos}</h3>
+                            <p>Chats Ativos</p>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Erro ao carregar estatísticas:', error);
+            }
+        }
+
+        async function carregarAlunos() {
+            try {
+                const response = await fetch(`/api/alunos/${key}`);;
+                const alunos = await response.json();
+                
+                const tbody = document.getElementById('alunosBody');
+                tbody.innerHTML = '';
+                
+                alunos.forEach(aluno => {
+                    const row = `
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <div class="chat-contact-avatar">${aluno.nome[0]}</div>
+                                    <div>${aluno.nome}</div>
+                                </div>
+                            </td>
+                            <td>${aluno.treino} - ${aluno.nivel}</td>
+                            <td>${aluno.ultimo_acesso}</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${aluno.progresso}%"></div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge ${aluno.status === 'Ativo' ? 'status-active' : 'status-inactive'}">${aluno.status}</span></td>
+                            <td>
+                                <button class="action-btn btn-primary"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn"><i class="fas fa-comment"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            } catch (error) {
+                console.error('Erro ao carregar alunos:', error);
+            }
+        }
+
+        function filtrarAlunos(tipo) {
+            // Implementar filtragem
+            console.log('Filtrar por:', tipo);
+        }
+    </script>
+</body>
+</html>
