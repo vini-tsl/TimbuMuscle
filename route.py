@@ -1,4 +1,6 @@
 from sqlite3 import IntegrityError
+
+from flask_login import current_user
 from app import app
 from flask import render_template, request, redirect, url_for, jsonify, session, flash
 import secrets
@@ -6,7 +8,7 @@ import random
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from models import Usuario, Treino, Progresso
+from models import Usuario, Treino, Progresso, Mensagem, Conversa
 from datetime import datetime, timedelta
 from db import db
 
@@ -207,7 +209,6 @@ def buscar_usuario_por_key(key_procurado):
             'key': usuario.key,
             'nome': usuario.nome,
             'email': usuario.email,
-            'senha': usuario.senha,
             'telefone': usuario.telefone
         }
     
@@ -308,4 +309,158 @@ def api_estatisticas(key):
     }) 
 
 
+@app.route("/suporte_profissional/<key>", methods=['GET'])
+def suporte_pro(key):
+    user = buscar_usuario_por_key(key)
+    return render_template("suporte_profissional.html", key=key, user=user)
 
+@app.route('/api/conversas/<key>')
+def api_conversas(key):
+    if current_user.key != key or not current_user.is_profissional():
+        return jsonify({'error': 'Não autorizado'}), 403
+    
+    # Buscar todas as conversas com informações do usuário
+    conversas = Conversa.query.join(Usuario).add_columns(
+        Conversa.id,
+        Usuario.nome,
+        Usuario.id.label('usuario_id'),
+        Conversa.tipo_suporte,
+        Conversa.status,
+        Conversa.data_ultima_mensagem
+    ).filter(Conversa.usuario_id == Usuario.id).all()
+    
+    # Formatar resposta
+    resultado = []
+    for conversa in conversas:
+        # Buscar última mensagem
+        ultima_mensagem = Mensagem.query.filter_by(conversa_id=conversa.id).order_by(Mensagem.data_envio.desc()).first()
+        
+        # Contar mensagens não lidas
+        nao_lidas = Mensagem.query.filter_by(
+            conversa_id=conversa.id, 
+            destinatario_id=current_user.id,
+            lida=False
+        ).count()
+        
+        resultado.append({
+            'id': conversa.id,
+            'name': conversa.nome,
+            'type': conversa.tipo_suporte,
+            'lastMessage': ultima_mensagem.conteudo if ultima_mensagem else 'Nenhuma mensagem',
+            'time': conversa.data_ultima_mensagem.strftime('%H:%M') if conversa.data_ultima_mensagem else '',
+            'unread': nao_lidas,
+            'avatar': conversa.nome[0].upper() if conversa.nome else 'U',
+            'status': 'online'  # Em uma aplicação real, verificar status real
+        })
+    
+    return jsonify(resultado)
+
+# API para carregar mensagens de uma conversa
+@app.route('/api/mensagens/<key>/<int:conversa_id>')
+def api_mensagens(key, conversa_id):
+    if current_user.key != key:
+        return jsonify({'error': 'Não autorizado'}), 403
+    
+    # Verificar se o usuário tem acesso à conversa
+    conversa = Conversa.query.get_or_404(conversa_id)
+    if not current_user.is_profissional() and conversa.usuario_id != current_user.id:
+        return jsonify({'error': 'Acesso negado'}), 403
+    
+    # Buscar mensagens da conversa
+    mensagens = Mensagem.query.filter_by(conversa_id=conversa_id).order_by(Mensagem.data_envio.asc()).all()
+    
+    # Marcar mensagens como lidas se for o destinatário
+    for msg in mensagens:
+        if msg.destinatario_id == current_user.id and not msg.lida:
+            msg.lida = True
+            db.session.commit()
+    
+    # Formatar resposta
+    resultado = []
+    for msg in mensagens:
+        resultado.append({
+            'content': msg.conteudo,
+            'sent': msg.remetente_id == current_user.id,
+            'time': msg.data_envio.strftime('%H:%M')
+        })
+    
+    return jsonify(resultado)
+
+# API para enviar mensagem
+@app.route('/api/enviar/<key>', methods=['POST'])
+def api_enviar(key):
+    if current_user.key != key:
+        return jsonify({'error': 'Não autorizado'}), 403
+    
+    data = request.get_json()
+    conteudo = data.get('conteudo')
+    tipo_suporte = data.get('tipo_suporte', 'geral')
+    
+    if not conteudo:
+        return jsonify({'error': 'Mensagem vazia'}), 400
+    
+    # Para usuários: encontrar ou criar conversa
+    if not current_user.is_profissional():
+        # Encontrar profissional disponível baseado no tipo de suporte
+        if tipo_suporte == 'personal':
+            profissional = Usuario.query.filter_by(tipo='personal').first()
+        elif tipo_suporte == 'nutricionista':
+            profissional = Usuario.query.filter_by(tipo='nutricionista').first()
+        else:
+            # Se não especificado, encontrar qualquer profissional
+            profissional = Usuario.query.filter(Usuario.tipo.in_(['personal', 'nutricionista'])).first()
+        
+        if not profissional:
+            return jsonify({'error': 'Nenhum profissional disponível'}), 400
+        
+        # Verificar se já existe uma conversa aberta
+        conversa = Conversa.query.filter_by(
+            usuario_id=current_user.id, 
+            tipo_suporte=tipo_suporte,
+            status='aberta'
+        ).first()
+        
+        # Se não existir, criar uma nova conversa
+        if not conversa:
+            conversa = Conversa(
+                usuario_id=current_user.id,
+                tipo_suporte=tipo_suporte,
+                status='aberta'
+            )
+            db.session.add(conversa)
+            db.session.commit()
+    else:
+        # Para profissionais: usar a conversa especificada
+        conversa_id = data.get('conversa_id')
+        if not conversa_id:
+            return jsonify({'error': 'ID da conversa não especificado'}), 400
+        
+        conversa = Conversa.query.get_or_404(conversa_id)
+        
+        # Destinatário é o usuário da conversa
+        profissional = current_user
+        destinatario_id = conversa.usuario_id
+    
+    # Criar mensagem
+    if current_user.is_profissional():
+        mensagem = Mensagem(
+            conversa_id=conversa.id,
+            remetente_id=current_user.id,
+            destinatario_id=conversa.usuario_id,
+            conteudo=conteudo
+        )
+    else:
+        mensagem = Mensagem(
+            conversa_id=conversa.id,
+            remetente_id=current_user.id,
+            destinatario_id=profissional.id,
+            conteudo=conteudo
+        )
+    
+    # Atualizar data da última mensagem da conversa
+    conversa.data_ultima_mensagem = datetime.utcnow()
+    
+    db.session.add(mensagem)
+    db.session.commit()
+    
+    return jsonify({'success': True, 'mensagem_id': mensagem.id})

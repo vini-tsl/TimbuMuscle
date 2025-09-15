@@ -16,7 +16,9 @@ class Usuario(db.Model):
     # Relacionamentos
     treinos = db.relationship('Treino', backref='aluno', lazy=True)
     progressos = db.relationship('Progresso', backref='aluno', lazy=True)
-    
+    mensagens_enviadas = db.relationship('Mensagem', foreign_keys='Mensagem.remetente_id', backref='remetente', lazy=True)
+    mensagens_recebidas = db.relationship('Mensagem', foreign_keys='Mensagem.destinatario_id', backref='destinatario', lazy=True)
+    conversas = db.relationship('Conversa', foreign_keys='Conversa.usuario_id', backref='usuario', lazy=True)
 
 class Treino(db.Model):
     __tablename__ = 'treinos'
@@ -51,3 +53,35 @@ class Progresso(db.Model):
     porcentagem = db.Column(db.Integer, default=0)
     data_registro = db.Column(db.DateTime, default=datetime.utcnow)
     observacoes = db.Column(db.Text)
+
+
+class Conversa(db.Model):
+    __tablename__ = 'conversas'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    tipo_suporte = db.Column(db.String(20), nullable=False)  # 'geral', 'personal', 'nutricionista'
+    status = db.Column(db.String(20), default='aberta')  # 'aberta', 'fechada', 'em_andamento'
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+    data_ultima_mensagem = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Relacionamentos
+    mensagens = db.relationship('Mensagem', backref='conversa', lazy=True)
+
+class Mensagem(db.Model):
+    __tablename__ = 'mensagens'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    conversa_id = db.Column(db.Integer, db.ForeignKey('conversas.id'), nullable=False)
+    remetente_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    destinatario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    conteudo = db.Column(db.Text, nullable=False)
+    lida = db.Column(db.Boolean, default=False)
+    data_envio = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Índices para melhor performance em consultas
+    __table_args__ = (
+        db.Index('ix_mensagens_conversa_id', 'conversa_id'),
+        db.Index('ix_mensagens_remetente_id', 'remetente_id'),
+        db.Index('ix_mensagens_destinatario_id', 'destinatario_id'),
+    )

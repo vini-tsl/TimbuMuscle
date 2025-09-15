@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimbuMuscle - Suporte</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
+    <style>
+        :root {
+            --primary-color: #ff3f3f;
+            --secondary-color: #4A90E2;
+            --accent-color: #50C878;
+            --dark-color: #333333;
+            --light-color: #f8f9fa;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            --border-color: #dee2e6;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --gray-dark: #718096;
+        }
+       :root {
+            --primary: #ff3f3f;
+            --secondary: #4A90E2;
+            --accent: #50C878;
+            --dark: #333333;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border: #dee2e6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f5f5f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: white;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .logo h1 {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .nav-menu {
+            flex: 1;
+        }
+
+        .nav-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            color: var(--dark);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .nav-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: rgba(255, 63, 63, 0.1);
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+
+        .user-info {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 20px;
+            padding: 5px 15px;
+            width: 300px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .search-box input {
+            border: none;
+            padding: 8px;
+            width: 100%;
+            outline: none;
+        }
+
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        
+        /* Chat Layout */
+        .chat-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        /* Contacts List */
+        .contacts-list {
+            width: 350px;
+            background-color: white;
+            border-right: 1px solid var(--gray-light);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .contacts-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .contacts-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .new-chat-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .contact-filter {
+            padding: 10px 20px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .filter-options {
+            display: flex;
+            background-color: var(--gray-light);
+            border-radius: 30px;
+            padding: 3px;
+        }
+        
+        .filter-option {
+            flex: 1;
+            padding: 5px;
+            text-align: center;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .filter-option.active {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contacts {
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .contact {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--gray-light);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .contact:hover, .contact.active {
+            background-color: #f5f7fb;
+        }
+        
+        .contact-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .contact-info {
+            flex: 1;
+        }
+        
+        .contact-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .contact-lastmsg {
+            font-size: 14px;
+            color: var(--gray-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+        
+        .contact-meta {
+            text-align: right;
+        }
+        
+        .contact-time {
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+        
+        .contact-unread {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            text-align: center;
+            line-height: 20px;
+        }
+        
+        /* Chat Area */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #e6eaf0;
+        }
+        
+        .chat-header {
+            padding: 15px 25px;
+            background-color: white;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .chat-user {
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .chat-user-info h3 {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .chat-user-info span {
+            font-size: 13px;
+            color: var(--gray);
+        }
+        
+        .chat-actions button {
+            background: none;
+            border: none;
+            color: var(--gray-dark);
+            font-size: 18px;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+        
+        .messages-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message {
+            max-width: 70%;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message.received {
+            align-self: flex-start;
+        }
+        
+        .message.sent {
+            align-self: flex-end;
+        }
+        
+        .message-content {
+            padding: 12px 15px;
+            border-radius: 18px;
+            margin-bottom: 5px;
+            position: relative;
+        }
+        
+        .message.received .message-content {
+            background-color: white;
+            border-top-left-radius: 4px;
+        }
+        
+        .message.sent .message-content {
+            background-color: var(--primary-color);
+            color: white;
+            border-top-right-radius: 4px;
+        }
+        
+        .message-time {
+            font-size: 12px;
+            color: var(--gray);
+            align-self: flex-end;
+        }
+        
+        .message.sent .message-time {
+            align-self: flex-end;
+        }
+        
+        .message-input {
+            padding: 15px 25px;
+            background-color: white;
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+        }
+        
+        .message-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--gray-light);
+            border-radius: 30px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        
+        .send-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .contacts-list {
+                width: 300px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                padding: 10px;
+            }
+            
+            .logo {
+                padding: 0 10px 0 0;
+                border-bottom: none;
+                border-right: 1px solid rgba(255, 255, 255, 0.1);
+                margin-bottom: 0;
+                margin-right: 10px;
+            }
+            
+            .nav-menu {
+                flex: 1;
+                display: flex;
+            }
+            
+            .nav-item {
+                padding: 10px 15px;
+                border-left: none;
+                border-bottom: 4px solid transparent;
+            }
+            
+            .nav-item:hover, .nav-item.active {
+                border-left: none;
+                border-bottom: 4px solid white;
+            }
+            
+            .user-info {
+                padding: 0 0 0 15px;
+                border-top: none;
+                border-left: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .chat-container {
+                flex-direction: column;
+            }
+            
+            .contacts-list {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--gray-light);
+                max-height: 300px;
+            }
+        }
+        
+        /* Estilos específicos para usuário */
+        .user-view .contacts-list {
+            display: none;
+        }
+        
+        .user-view .chat-area {
+            width: 100%;
+        }
+        
+        /* Badges de status */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--success-color);
+        }
+        
+        .status-inactive {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: var(--danger-color);
+        }
+        
+        .status-pending {
+            background-color: rgba(255, 152, 0, 0.2);
+            color: var(--warning-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="sidebar">
+            <div class="logo">
+                <h1>TimbuMuscle</h1>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="{{ url_for('profissional', key=key) }}" class="nav-item">
+                    <i class="fas fa-users"></i> Alunos
+                </a>
+                <a href="{{ url_for('suporte_pro', key=key) }}" class="nav-item active">
+                    <i class="fas fa-comment-medical"></i> Suporte
+                </a>
+                <a href="/login" class="nav-item">
+                    <i class="fas fa-home"></i> Sair
+                </a>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">{{ user.nome[0] }}</div>
+                <div>
+                    <div>{{ user.nome }}</div>
+                    <small>Profissional</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            
+            <!-- Chat Container -->
+            <div class="chat-container">
+                <!-- Lista de Contatos (apenas para admin) -->
+                <div class="contacts-list">
+                    <div class="contacts-header">
+                        <h2>Conversas</h2>
+                    </div>
+                    
+                    <div class="contacts" id="contactsList">
+                        <!-- Contatos serão carregados via JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Área de Chat -->
+                <div class="chat-area">
+                    <div class="chat-header">
+                        <div class="chat-user">
+                            <div class="chat-user-avatar" id="currentChatAvatar">
+                                {% if user_type == 'user' %}
+                                    {{ support_type[0] if support_type else 'S' }}
+                                {% else %}
+                                    T
+                                {% endif %}
+                            </div>
+                            <div class="chat-user-info">
+                                <h3 id="currentChatName">
+                                    {% if user_type == 'user' %}
+                                        Suporte {{ support_type if support_type else 'Geral' }}
+                                    {% else %}
+                                        <br>Teste
+                                    {% endif %}
+                                </h3>
+                                <span id="currentChatStatus">
+                                    {% if user_type == 'user' %}
+                                        Online
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="messages-container" id="messagesContainer">
+                        
+                        <!-- Mensagens iniciais para usuário -->
+                        <div class="message received">
+                            <div class="message-content">
+                                Olá! Como posso ajudá-lo hoje?
+                            </div>
+                            <div class="message-time">10:00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="message-input">
+                        <input type="text" placeholder="Digite uma mensagem..." id="messageInput">
+                        <button class="send-btn" id="sendMessageBtn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados iniciais
+        const key = document.body.dataset.key;
+        const userType = "{{ user_type }}";
+        const supportType = "{{ support_type }}";
+        
+        // Dados de exemplo (em uma aplicação real, viriam do backend)
+        const contacts = [
+            {
+                id: 1,
+                name: "João Silva",
+                type: "personal",
+                lastMessage: "Olá, tenho uma dúvida sobre meu treino",
+                time: "10:30",
+                unread: 2,
+                avatar: "J",
+                status: "online",
+                messages: [
+                    { content: "Olá, tenho uma dúvida sobre meu treino", sent: false, time: "10:30" },
+                    { content: "Oi João! Em que posso ajudar?", sent: true, time: "10:32" },
+                    { content: "Não estou conseguindo executar o exercício de supino corretamente", sent: false, time: "10:33" }
+                ]
+            },
+            {
+                id: 2,
+                name: "Maria Santos",
+                type: "nutricionista",
+                lastMessage: "Gostaria de ajustar minha dieta",
+                time: "09:15",
+                unread: 0,
+                avatar: "M",
+                status: "offline",
+                messages: [
+                    { content: "Gostaria de ajustar minha dieta", sent: false, time: "09:15" },
+                    { content: "Claro, Maria. Me conte o que está sentindo.", sent: true, time: "09:20" }
+                ]
+            },
+            {
+                id: 3,
+                name: "Carlos Oliveira",
+                type: "personal",
+                lastMessage: "Preciso de um novo treino para perna",
+                time: "Ontem",
+                unread: 1,
+                avatar: "C",
+                status: "online",
+                messages: [
+                    { content: "Preciso de um novo treino para perna", sent: false, time: "16:45" },
+                    { content: "Vou preparar um novo treino para você hoje ainda!", sent: true, time: "17:00" }
+                ]
+            }
+        ];
+        
+        // Carregar dados ao iniciar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            if (userType === 'admin') {
+                loadContacts();
+                setupFilters();
+            } else {
+                // Para usuários, carregar a conversa com o suporte selecionado
+                loadUserChat();
+            }
+            
+            setupMessageSending();
+        });
+        
+        // Carregar lista de contatos (apenas para admin)
+        function loadContacts() {
+            const contactsList = document.getElementById('contactsList');
+            contactsList.innerHTML = '';
+            
+            contacts.forEach(contact => {
+                const contactEl = document.createElement('div');
+                contactEl.className = 'contact';
+                contactEl.dataset.id = contact.id;
+                contactEl.dataset.type = contact.type;
+                
+                contactEl.innerHTML = `
+                    <div class="contact-avatar">${contact.avatar}</div>
+                    <div class="contact-info">
+                        <div class="contact-name">${contact.name}</div>
+                        <div class="contact-lastmsg">${contact.lastMessage}</div>
+                    </div>
+                    <div class="contact-meta">
+                        <div class="contact-time">${contact.time}</div>
+                        ${contact.unread > 0 ? `<div class="contact-unread">${contact.unread}</div>` : ''}
+                    </div>
+                `;
+                
+                contactEl.addEventListener('click', () => openChat(contact));
+                contactsList.appendChild(contactEl);
+            });
+        }
+        
+        // Configurar filtros (apenas para admin)
+        function setupFilters() {
+            const filterOptions = document.querySelectorAll('.filter-option');
+            
+            filterOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remover classe active de todos
+                    filterOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Adicionar classe active ao selecionado
+                    this.classList.add('active');
+                    
+                    // Filtrar contatos
+                    const filter = this.dataset.filter;
+                    filterContacts(filter);
+                });
+            });
+        }
+        
+        // Filtrar contatos (apenas para admin)
+        function filterContacts(filter) {
+            const contacts = document.querySelectorAll('.contact');
+            
+            contacts.forEach(contact => {
+                if (filter === 'all') {
+                    contact.style.display = 'flex';
+                } else if (filter === 'unread') {
+                    const unread = contact.querySelector('.contact-unread');
+                    contact.style.display = unread ? 'flex' : 'none';
+                } else {
+                    contact.style.display = contact.dataset.type === filter ? 'flex' : 'none';
+                }
+            });
+        }
+        
+        // Abrir chat (apenas para admin)
+        function openChat(contact) {
+            // Atualizar header do chat
+            document.getElementById('currentChatAvatar').textContent = contact.avatar;
+            document.getElementById('currentChatName').textContent = contact.name;
+            document.getElementById('currentChatStatus').textContent = contact.status;
+            
+            // Carregar mensagens
+            const messagesContainer = document.getElementById('messagesContainer');
+            messagesContainer.innerHTML = '';
+            
+            contact.messages.forEach(message => {
+                const messageEl = document.createElement('div');
+                messageEl.className = `message ${message.sent ? 'sent' : 'received'}`;
+                
+                messageEl.innerHTML = `
+                    <div class="message-content">${message.content}</div>
+                    <div class="message-time">${message.time}</div>
+                `;
+                
+                messagesContainer.appendChild(messageEl);
+            });
+            
+            // Scroll para o final das mensagens
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Marcar como lido (remover badge de não lido)
+            const contactEl = document.querySelector(`.contact[data-id="${contact.id}"]`);
+            const unreadBadge = contactEl.querySelector('.contact-unread');
+            if (unreadBadge) {
+                unreadBadge.remove();
+            }
+            
+            // Adicionar classe active ao contato
+            document.querySelectorAll('.contact').forEach(c => c.classList.remove('active'));
+            contactEl.classList.add('active');
+        }
+        
+        // Carregar chat do usuário
+        function loadUserChat() {
+            // Em uma aplicação real, isso viria do backend
+            const messagesContainer = document.getElementById('messagesContainer');
+            
+            // Adicionar mensagem de boas-vindas baseada no tipo de suporte
+            const welcomeMessage = supportType === 'personal' 
+                ? "Olá! Sou seu personal trainer. Como posso ajudar com seus treinos?" 
+                : supportType === 'nutricionista' 
+                    ? "Olá! Sou sua nutricionista. Como posso ajudar com sua alimentação?" 
+                    : "Olá! Como posso ajudá-lo hoje?";
+            
+            const welcomeMsgEl = document.createElement('div');
+            welcomeMsgEl.className = 'message received';
+            welcomeMsgEl.innerHTML = `
+                <div class="message-content">${welcomeMessage}</div>
+                <div class="message-time">Agora</div>
+            `;
+            
+            messagesContainer.appendChild(welcomeMsgEl);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        // Configurar envio de mensagens
+        function setupMessageSending() {
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendMessageBtn');
+            
+            function sendMessage() {
+                const message = messageInput.value.trim();
+                if (message === '') return;
+                
+                const messagesContainer = document.getElementById('messagesContainer');
+                const now = new Date();
+                const time = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+                
+                // Adicionar mensagem enviada
+                const messageEl = document.createElement('div');
+                messageEl.className = 'message sent';
+                messageEl.innerHTML = `
+                    <div class="message-content">${message}</div>
+                    <div class="message-time">${time}</div>
+                `;
+                
+                messagesContainer.appendChild(messageEl);
+                
+                // Limpar input
+                messageInput.value = '';
+                
+                // Scroll para o final
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                
+                // Simular resposta (apenas para demonstração)
+                if (userType === 'user') {
+                    setTimeout(() => {
+                        const responseMsgEl = document.createElement('div');
+                        responseMsgEl.className = 'message received';
+                        
+                        let response = "";
+                        if (supportType === 'personal') {
+                            response = "Entendi sua dúvida. Vou preparar um vídeo explicativo para você!";
+                        } else if (supportType === 'nutricionista') {
+                            response = "Obrigado pela informação. Vou analisar e retornar com orientações.";
+                        } else {
+                            response = "Obrigado por entrar em contato. Em breve retornaremos com uma solução.";
+                        }
+                        
+                        responseMsgEl.innerHTML = `
+                            <div class="message-content">${response}</div>
+                            <div class="message-time">${time}</div>
+                        `;
+                        
+                        messagesContainer.appendChild(responseMsgEl);
+                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    }, 1000);
+                }
+            }
+            
+            sendButton.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

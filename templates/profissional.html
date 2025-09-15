@@ -20,26 +20,18 @@
             
             <div class="nav-menu">
                 <a href="{{ url_for('profissional', key=key) }}" class="nav-item active">
-                    <i class="fas fa-home"></i> Dashboard
-                </a>
-                <a href="#" class="nav-item">
                     <i class="fas fa-users"></i> Alunos
                 </a>
-                <a href="#" class="nav-item">
-                    <i class="fas fa-dumbbell"></i> Treinos
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fas fa-chart-line"></i> Progresso
-                </a>
-                <a href="#" class="nav-item">
+                <a href="{{ url_for('suporte_pro', key=key) }}" class="nav-item">
                     <i class="fas fa-comment-medical"></i> Suporte
                 </a>
-                <a href="#" class="nav-item">
-                    <i class="fas fa-utensils"></i> Dietas
+                <a href="/login" class="nav-item">
+                    <i class="fas fa-home"></i> Sair
                 </a>
             </div>
             
             <div class="user-info">
+                
                 <div class="user-avatar">{{ user.nome[0] }}</div>
                 <div>
                     <div>{{ user.nome }}</div>
@@ -51,7 +43,6 @@
         <!-- Main Content -->
         <div class="main-content">
             <div class="header">
-                <h2 class="page-title">Dashboard do Profissional</h2>
                 <div class="search-box">
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Pesquisar aluno..." id="searchInput">
