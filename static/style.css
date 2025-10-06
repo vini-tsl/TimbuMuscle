@@ -944,4 +944,11 @@ progress::-webkit-progress-value {
 	display:flex;
 	float:left;
 	width: 33%;
+
+}
+
+.forms {
+	justify-content: center;
+	align-items: center;
+	height: 70vh;
 }
