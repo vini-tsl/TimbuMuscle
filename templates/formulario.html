@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
+    <title>TimbuMuscle</title>
+</head>
+<body>
+    <header class="nav">
+        <nav>
+            <div class="nav-esquerda">
+                <h1>TimbuMuscle</h1>
+                <a href="{{ url_for('usuarios', key=key, user=user) }}">HOME</a>
+                <a href="{{ url_for('mostrar_treinos', key=key, user=user) }}">TREINOS</a>
+            </div>
+            <div class="nav-direita-normal">
+                <a href="{{ url_for('perfil', key=key, user=user) }}">PERFIL</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="nav">
+        <div class="form-container-treino">
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+                <span id="progress-text">0%</span>
+            </div>
+
+            <form action="{{ url_for('usuarios', key=key, user=user) }}" method="POST" id="multiStepForm">
+                <div class="form-step active">
+                    <h2>1. Qual é o seu principal objetivo com o treino?</h2>
+                    <div class="radio-options">
+                        <div class="radio-option">
+                            <label><input type="radio" name="objetivo" value="massa"> Ganho de massa muscular</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="objetivo" value="definicao"> Definição corporal / perder gordura</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="objetivo" value="saude"> Melhorar a saúde e disposição</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="objetivo" value="forca"> Ganhar força</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="objetivo" value="estetico"> Ficar com o shape bonito / estético</label>
+                        </div>
+                    </div>
+                    <button type="button" class="next-btn">Próximo</button>
+                </div>
+
+                <div class="form-step">
+
+                    <h2>2. Qual é o seu nível atual de treino com musculação?</h2>
+
+                    <div class="radio-options">
+                        <div class="radio-option">
+                            <label><input type="radio" name="nivel" value="iniciante"> Iniciante (menos de 6 meses)</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="nivel" value="intermediario"> Intermediário (6 meses a 2 anos)</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="nivel" value="avancado"> Avançado (mais de 2 anos)</label>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="prev-btn">Voltar</button>
+                        <button type="button" class="next-btn">Próximo</button>
+                    </div>
+                    
+                </div>
+
+                <div class="form-step">
+
+                    <h2>3. Quantos dias por semana você pode treinar?</h2>
+
+                    {% for i in range(3, 7) %}
+                    <div class="radio-options">
+                        <div class="radio-option">
+                            <label><input type="radio" name="frequencia" value="{{ i }}"> {{ i }}</label>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <div class="btn-group">
+                        <button type="button" class="prev-btn">Voltar</button>
+                        <button type="button" class="next-btn">Próximo</button>
+                    </div>
+        
+                </div>
+                
+                <div class="form-step">
+
+                    <h2>4. Quanto tempo você tem disponível por treino?</h2>
+
+                    <div class="radio-options">
+                        <div class="radio-option">
+                            <label><input type="radio" name="tempo" value="30"> 30 minutos</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="tempo" value="45"> 45 minutos</label>
+                        </div>
+                        
+                        <div class="radio-option">
+                            <label><input type="radio" name="tempo" value="60"> 1 hora</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="tempo" value="mais"> Mais de 1 hora</label>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="prev-btn">Voltar</button>
+                        <button type="button" class="next-btn">Próximo</button>
+                    </div>
+
+                </div>
+
+                <div class="form-step">
+
+                    <h2>5. Onde você pretende treinar?</h2>
+
+                    <div class="radio-options">
+                        <div class="radio-option">
+                            <label><input type="radio" name="local" value="academia"> Academia</label>
+                        </div>
+
+                        <div class="radio-option">   
+                            <label><input type="radio" name="local" value="casa_equip"> Em casa com equipamentos</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="local" value="casa_sem"> Em casa sem equipamentos</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="local" value="livre"> Ao ar livre</label>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="prev-btn">Voltar</button>
+                        <button type="button" class="next-btn">Próximo</button>
+                    </div>
+                </div>
+
+                <div class="form-step">
+
+                    <h2>6. Você tem alguma limitação física ou lesão?</h2>
+
+                    <div class="radio-options">
+                        <div class="radio-option">
+                            <label><input type="radio" name="lesao" value="nao"> Não</label>
+                        </div>
+                        
+                        <div class="radio-option">
+                        <label><input type="radio" name="lesao" value="sim"> Sim</label>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="prev-btn">Voltar</button>
+                        <button type="button" class="next-btn">Próximo</button>
+                    </div>
+                </div>
+
+                <div class="form-step">
+
+                    <h2>7. Você segue uma alimentação voltada para os objetivos?</h2>
+
+                    <div class="radio-options">
+                        <div class="radio-option">
+                            <label><input type="radio" name="alimentacao" value="nutricionista"> Sim, com acompanhamento nutricional</label>
+                        </div>
+                        <div class="radio-option">
+                            <label><input type="radio" name="alimentacao" value="propria"> Sim, por conta própria</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="alimentacao" value="nao"> Não</label>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="prev-btn">Voltar</button>
+                        <button type="button" class="next-btn">Próximo</button>
+                    </div>
+                </div>
+
+                <div class="form-step">
+
+                    <h2>8. Como está seu percentual de gordura atual (se souber)?</h2>
+
+                    <div class="radio-options">
+                        <div class="radio-option">
+                            <label><input type="radio" name="gordura" value="alto"> Alto</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="gordura" value="medio"> Médio</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="gordura" value="baixo"> Baixo</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="gordura" value="nao_sabe"> Não sei dizer</label>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="prev-btn">Voltar</button>
+                        <button type="button" class="next-btn">Próximo</button>
+                    </div>
+                </div>
+
+                <div class="form-step"> 
+
+                    <h2>9. Nível de energia e motivação para treinar:</h2>
+
+                    <div class="radio-options">
+                        <div class="radio-option">
+                            <label><input type="radio" name="motivacao" value="alta"> Alta motivação</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="motivacao" value="media"> Mediana</label>
+                        </div>
+
+                        <div class="radio-option">
+                            <label><input type="radio" name="motivacao" value="baixa"> Baixa, preciso de estímulo</label>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="prev-btn">Voltar</button>
+                        <button type="button" class="next-btn">Próximo</button>
+                    </div>
+                </div>
+
+                <div class="form-step">
+
+                    <h2>10. Áreas do corpo que deseja focar:</h2>
+                    
+                    <div class="checkbox-options">
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="peito" name="foco" value="peito">
+                            <label for="peito">Peito</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="costas" name="foco" value="costas">
+                            <label for="costas">Costas</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="pernas" name="foco" value="pernas">
+                            <label for="pernas">Pernas</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="gluteos" name="foco" value="gluteos">
+                            <label for="gluteos">Glúteos</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="ombros" name="foco" value="ombros">
+                            <label for="ombros">Ombros</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="abdomen" name="foco" value="abdomen">
+                            <label for="abdomen">Abdômen</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="bracos" name="foco" value="bracos">
+                            <label for="bracos">Bíceps / Tríceps</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="geral" name="foco" value="geral">
+                            <label for="geral">Corpo todo</label>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button type="button" class="prev-btn">Voltar</button>
+                        <button type="submit">Enviar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        const steps = document.querySelectorAll(".form-step");
+        const progress = document.getElementById("progress");
+        const progressText = document.getElementById("progress-text");
+        const nextBtns = document.querySelectorAll(".next-btn");
+        const prevBtns = document.querySelectorAll(".prev-btn");
+
+        let currentStep = 0;
+
+        function updateFormSteps() {
+            steps.forEach((step, i) => {
+                step.classList.toggle("active", i === currentStep);
+            });
+            let percent = ((currentStep + 1) / steps.length) * 100;
+            progress.style.width = percent + "%";
+            progressText.textContent = Math.round(percent) + "%";
+        }
+
+        nextBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                if (!isStepValid()) {
+                    alert("Por favor, selecione uma opção para continuar.");
+                    return;
+                }
+                if (currentStep < steps.length - 1) {
+                    currentStep++;
+                    updateFormSteps();
+                }
+            });
+        })
+
+        prevBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                if (currentStep > 0) {
+                    currentStep--;
+                    updateFormSteps();
+                }
+            });
+        });
+
+        function isStepValid() {
+            const inputs = steps[currentStep].querySelectorAll('input');
+            const required = [...inputs].some(input => {
+                if (input.type === 'radio' || input.type === 'checkbox') {
+                    return input.checked;
+                }
+                if (input.type === 'text') {
+                    return input.value.trim() !== "";
+                }
+            });
+            return required;
+        }
+
+
+        updateFormSteps();
+    </script>
+</body>
+</html>

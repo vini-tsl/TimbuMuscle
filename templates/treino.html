@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimbuMuscle</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-esquerda">
+                <h1>TimbuMuscle</h1>
+                <a href="{{ url_for('usuarios', key=key) }}">HOME</a>
+                <a href="{{ url_for('mostrar_treinos', key=key) }}">TREINOS</a>
+                <a href="{{ url_for('suporte', key=key) }}">SUPORTE</a>
+            </div>
+            <div class="nav-direita-normal">
+                <a href="{{ url_for('perfil', key=key) }}">PERFIL</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="template">
+            <input type="text" placeholder="🔍 Pesquisar treino...">
+            <div class="treinos-container">
+                <div class="treino-card">
+                    <span class="status-badge em-andamento">EM ANDAMENTO</span>
+                    <div class="treino-header">
+                        Superiores
+                    </div>
+                    <div class="treino-content">
+                        <p><strong>Duração:</strong> 60 minutos</p>
+                        <p><strong>Dificuldade:</strong> Intermediário</p>
+                        <ul>
+                            <li>Supino reto - 4x10</li>
+                            <li>Remada curvada - 4x10</li>
+                            <li>Desenvolvimento - 3x12</li>
+                            <li>Barra fixa - 3x8</li>
+                        </ul>
+                    </div>
+                    <div class="treino-footer">
+                        <a href="{{ url_for('usuarios', key=key) }}"><button class="btn-treino">CONTINUAR TREINO</button></a>
+                    </div>
+                </div>
+
+                <div class="treino-card">
+                    <span class="status-badge proximo-treino">PRÓXIMO</span>
+                    <div class="treino-header">
+                        Inferiores
+                    </div>
+                    <div class="treino-content">
+                        <p><strong>Duração:</strong> 70 minutos</p>
+                        <p><strong>Dificuldade:</strong> Avançado</p>
+                        <ul>
+                            <li>Agachamento livre - 4x8</li>
+                            <li>Leg press - 4x12</li>
+                            <li>Stiff - 3x10</li>
+                            <li>Cadeira extensora - 3x15</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="treino-card">
+                    <span class="status-badge proximo-treino">PRÓXIMO</span>
+                    <div class="treino-header">
+                        Cardio
+                    </div>
+                    <div class="treino-content">
+                        <p><strong>Duração:</strong> 45 minutos</p>
+                        <p><strong>Dificuldade:</strong> Iniciante</p>
+                        <ul>
+                            <li>Esteira - 20min</li>
+                            <li>Bicicleta - 15min</li>
+                            <li>Elíptico - 10min</li>
+                            <li>Alongamento - 10min</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="treino-card">
+                    <span class="status-badge proximo-treino">PRÓXIMO</span>
+                    <div class="treino-header">
+                        Braço
+                    </div>
+                    <div class="treino-content">
+                        <p><strong>Duração:</strong> 50 minutos</p>
+                        <p><strong>Dificuldade:</strong> Intermediário</p>
+                        <ul>
+                            <li>Rosca direta - 4x12</li>
+                            <li>Tríceps pulley - 4x12</li>
+                            <li>Rosca martelo - 3x15</li>
+                            <li>Francês - 3x10</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="treino-card">
+                    <span class="status-badge proximo-treino">PRÓXIMO</span>
+                    <div class="treino-header">
+                        Costas
+                    </div>
+                    <div class="treino-content">
+                        <p><strong>Duração:</strong> 65 minutos</p>
+                        <p><strong>Dificuldade:</strong> Avançado</p>
+                        <ul>
+                            <li>Puxada frontal - 4x10</li>
+                            <li>Remada baixa - 4x10</li>
+                            <li>Pulldown - 3x12</li>
+                            <li>Hiperextensão - 3x15</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="treino-card">
+                    <span class="status-badge proximo-treino">PRÓXIMO</span>
+                    <div class="treino-header">
+                        Abdômen
+                    </div>
+                    <div class="treino-content">
+                        <p><strong>Duração:</strong> 30 minutos</p>
+                        <p><strong>Dificuldade:</strong> Iniciante</p>
+                        <ul>
+                            <li>Prancha - 3x1min</li>
+                            <li>Abdominal crunch - 4x20</li>
+                            <li>Elevação de pernas - 3x15</li>
+                            <li>Russian twist - 3x20</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='treino.js') }}"></script>
+
+</body>
+</html>
