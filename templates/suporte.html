@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
+    <title>TimbuMuscle - Suporte</title>
+    <style>
+        .option {
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid transparent;
+        }
+        .option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            border-color: #FF4B2B;
+        }
+        .chamado-ativo {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #FF4B2B;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-esquerda">
+                <h1>TimbuMuscle</h1>
+                <a href="{{ url_for('usuarios.usuarios', key=key) }}">HOME</a>
+                <a href="{{ url_for('usuarios.mostrar_treinos', key=key) }}">TREINOS</a>
+                <a href="{{ url_for('suporte.suporte', key=key) }}">SUPORTE</a>
+                
+            </div>
+            <div class="nav-direita-normal">
+                <a href="{{ url_for('usuarios.perfil', key=key) }}">PERFIL</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="login-section">
+        {% if chamado_ativo %}
+        <div class="chamado-ativo">
+            <h2>Chamado em Andamento</h2>
+            <p><strong>Profissional:</strong> {{ chamado_ativo.profissional.nome if chamado_ativo.profissional else 'Aguardando...' }}</p>
+            <p><strong>Tipo:</strong> {{ 'Personal Trainer' if chamado_ativo.tipo == 'personal' else 'Nutricionista' }}</p>
+            <p><strong>Status:</strong> {{ chamado_ativo.status }}</p>
+            <a href="{{ url_for('chat.chat_suporte', key=key, chamado_id=chamado_ativo.id) }}" class="btn btn-primary">
+                Ir para Chat
+            </a>
+        </div>
+        <div class="login-options">
+            <div class="option" onclick="abrirChamado('personal')">
+                <img style="width: 250px; height: 300px;" src="{{ url_for('static', filename='image/personal.png') }}" alt="">
+                <h2>Personal</h2>
+            </div>
+            <div class="option" onclick="abrirChamado('nutricionista')">
+                <img style="width: 250px; height: 300px;" src="{{ url_for('static', filename='image/nutri.png') }}" alt="">
+                <h2>Nutricionista</h2>
+            </div>
+        </div>
+        {% else %}
+        <div style="margin-top: 150px;" class="login-options">
+            <div class="option" onclick="abrirChamado('personal')">
+                <img style="width: 250px; height: 300px;" src="{{ url_for('static', filename='image/personal.png') }}" alt="">
+                <h2>Personal</h2>
+            </div>
+            <div class="option" onclick="abrirChamado('nutricionista')">
+                <img style="width: 250px; height: 300px;" src="{{ url_for('static', filename='image/nutri.png') }}" alt="">
+                <h2>Nutricionista</h2>
+            </div>
+        </div>
+        {% endif %}
+
+        
+    </section>
+
+    <script>
+        async function abrirChamado(tipo) {
+            try {
+                const response = await fetch('/api/criar-chamado', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        key: '{{ key }}',
+                        tipo: tipo
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    window.location.href = `/chat-suporte/${data.chamado_id}?key={{ key }}`;
+                } else {
+                    alert('Erro ao abrir chamado: ' + data.message);
+                }
+            } catch (error) {
+                alert('Erro ao conectar com o servidor');
+            }
+        }
+
+        // Efeito visual
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                this.style.transform = 'translateY(2px)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-5px)';
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>

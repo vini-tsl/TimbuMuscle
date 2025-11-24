@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executar Treino - TimbuMuscle</title>
+    <style>
+        .timer {
+            font-size: 2em;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .feedback-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+        }
+        .dificuldade-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .dificuldade-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .facil { background: #4CAF50; color: white; }
+        .moderado { background: #FFC107; color: black; }
+        .dificil { background: #F44336; color: white; }
+    </style>
+</head>
+<body>
+    <!-- Header igual aos outros templates -->
+    
+    <main>
+        <div class="treino-em-execucao">
+            <h2>{{ treino.nome }}</h2>
+            <div class="timer" id="timer">00:00:00</div>
+            
+            <div class="exercicios-lista">
+                {% for exercicio in treino.exercicios_treino %}
+                <div class="exercicio-item">
+                    <h4>{{ exercicio.catalogo.nome }}</h4>
+                    <p>{{ exercicio.series }}x {{ exercicio.repeticoes }} - Descanso: {{ exercicio.descanso }}</p>
+                    {% if exercicio.catalogo.video_url %}
+                    <button onclick="mostrarVideo('{{ exercicio.catalogo.nome }}', '{{ exercicio.catalogo.video_url }}')">
+                        📹 Ver Demonstração
+                    </button>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            
+            <button onclick="finalizarTreino()" class="btn-treino" style="margin: 20px 0;">
+                ✅ Finalizar Treino
+            </button>
+            
+            <div class="feedback-section" id="feedbackSection" style="display: none;">
+                <h3>Como foi esse treino?</h3>
+                
+                <label>Quão difícil foi?</label>
+                <div class="dificuldade-buttons">
+                    <button class="dificuldade-btn facil" onclick="setDificuldade('muito_facil')">Muito Fácil</button>
+                    <button class="dificuldade-btn facil" onclick="setDificuldade('facil')">Fácil</button>
+                    <button class="dificuldade-btn moderado" onclick="setDificuldade('moderado')">Moderado</button>
+                    <button class="dificuldade-btn dificil" onclick="setDificuldade('dificil')">Difícil</button>
+                    <button class="dificuldade-btn dificil" onclick="setDificuldade('muito_dificil')">Muito Difícil</button>
+                </div>
+                
+                <label>Algum comentário?</label>
+                <textarea id="feedbackText" rows="3" style="width: 100%; padding: 10px;"></textarea>
+                
+                <button onclick="enviarFeedback()" class="btn-treino">Enviar Feedback</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let startTime = Date.now();
+        let timerInterval;
+        let dificuldadeSelecionada = '';
+        
+        // Iniciar timer
+        function updateTimer() {
+            const elapsed = Date.now() - startTime;
+            const hours = Math.floor(elapsed / 3600000);
+            const minutes = Math.floor((elapsed % 3600000) / 60000);
+            const seconds = Math.floor((elapsed % 60000) / 1000);
+            
+            document.getElementById('timer').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        timerInterval = setInterval(updateTimer, 1000);
+        
+        function finalizarTreino() {
+            clearInterval(timerInterval);
+            document.getElementById('feedbackSection').style.display = 'block';
+        }
+        
+        function setDificuldade(nivel) {
+            dificuldadeSelecionada = nivel;
+            // Remover seleção anterior
+            document.querySelectorAll('.dificuldade-btn').forEach(btn => {
+                btn.style.border = 'none';
+            });
+            // Adicionar borda ao selecionado
+            event.target.style.border = '3px solid #333';
+        }
+        
+        function enviarFeedback() {
+            if (!dificuldadeSelecionada) {
+                alert('Por favor, selecione o nível de dificuldade');
+                return;
+            }
+            
+            const duracaoMinutos = Math.floor((Date.now() - startTime) / 60000);
+            const feedback = document.getElementById('feedbackText').value;
+            
+            fetch('/api/registrar-execucao-treino', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    key: '{{ key }}',
+                    treino_id: {{ treino.id }},
+                    duracao_minutos: duracaoMinutos,
+                    dificuldade_percebida: dificuldadeSelecionada,
+                    feedback: feedback
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert('✅ ' + result.message);
+                    if (result.ajuste_recomendado !== 'manter') {
+                        const confirmar = confirm(`A IA recomenda ${result.ajuste_recomendado} a intensidade. Aplicar ajuste?`);
+                        if (confirmar) {
+                            aplicarAjusteTreino(result.ajuste_recomendado);
+                        }
+                    }
+                    window.location.href = "{{ url_for('usuarios.mostrar_treinos', key=key) }}";
+                } else {
+                    alert('❌ Erro: ' + result.message);
+                }
+            });
+        }
+        
+        function aplicarAjusteTreino(acao) {
+            fetch('/api/aplicar-ajuste-treino', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    key: '{{ key }}',
+                    treino_id: {{ treino.id }},
+                    acao: acao
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert('✅ ' + result.message);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

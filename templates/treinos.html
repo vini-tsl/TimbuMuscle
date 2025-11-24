@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimbuMuscle - Treinos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin: 10px 0;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-esquerda">
+                <h1>TimbuMuscle</h1>
+                <a href="{{ url_for('usuarios.usuarios', key=key) }}">HOME</a>
+                <a href="{{ url_for('treinos.mostrar_treinos', key=key) }}">TREINOS</a>
+                <a href="{{ url_for('suporte.suporte', key=key) }}">SUPORTE</a>
+            </div>
+            <div class="nav-direita-normal">
+                <a href="{{ url_for('usuarios.perfil', key=key) }}">PERFIL</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="template">
+
+            <input type="text" id="pesquisaTreino" placeholder="🔍 Pesquisar treino..." onkeyup="filtrarTreinos()">
+            
+            <div class="treinos-container" id="treinosContainer">
+                {% if treinos %}
+                    {% for treino in treinos %}
+                    <div class="treino-card" data-treino-nome="{{ treino.nome.lower() }}">
+                        <span class="status-badge {{ 'em-andamento' if progressos[treino.id] > 0 else 'proximo-treino' }}">
+                            {{ 'EM ANDAMENTO' if progressos[treino.id] > 0 else 'PRÓXIMO' }}
+                        </span>
+                        
+                        <!-- Barra de progresso -->
+                        <div class="progresso-container" style="margin-bottom: 10px;">
+                            <div class="progresso-bar" style="background: #f0f0f0; border-radius: 10px; height: 8px;">
+                                <div class="progresso-fill" style="background: linear-gradient(135deg, #fc2424, #ff6b6b); height: 100%; border-radius: 10px; width: {{ progressos[treino.id] }}%;"></div>
+                            </div>
+                            <small style="display: block; text-align: right; margin-top: 5px;">{{ progressos[treino.id] }}% completo</small>
+                        </div>
+
+                        <div class="treino-header">
+                            {{ treino.nome }}
+                        </div>
+                        
+                        <div class="treino-content">
+                            <p><strong>Dia:</strong> {{ treino.dia_semana }}</p>
+                            <p><strong>Tipo:</strong> {{ treino.tipo }}</p>
+                            
+                            <div class="exercicios-lista">
+                                <strong>Exercícios:</strong>
+                                <ul>
+                                    {% for exercicio in treino.exercicios %}
+                                    <li>
+                                        {{ exercicio.catalogo.nome }} - {{ exercicio.series }}x{{ exercicio.repeticoes }}
+                                        {% if exercicio.catalogo.video_url %}
+                                        <button onclick="mostrarVideo('{{ exercicio.catalogo.nome }}', '{{ exercicio.catalogo.video_url }}', '{{ exercicio.catalogo.instrucoes }}')" 
+                                                style="background: none; border: none; color: #667eea; cursor: pointer; margin-left: 5px;">
+                                            📹
+                                        </button>
+                                        {% endif %}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="treino-footer">
+                            <button class="btn-treino" onclick="iniciarTreino({{ treino.id }})">
+                                {{ 'CONTINUAR TREINO' if progressos[treino.id] > 0 else 'INICIAR TREINO' }}
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="treino-card" style="text-align: center; padding: 40px;">
+                        <h3>Nenhum treino encontrado</h3>
+                        <p>Clique no botão acima para gerar seu treino personalizado com IA!</p>
+                        <button onclick="abrirFormularioIA()" class="btn-treino">
+                            🧠 CRIAR MEU TREINO
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+        </div>
+    </div>
+
+    <!-- Modal Video Exercício -->
+    <div id="modalVideo" class="modal">
+        <div class="modal-content">
+            <span onclick="fecharVideo()" style="float: right; font-size: 24px; cursor: pointer;">&times;</span>
+            <h3 id="tituloExercicio"></h3>
+            <div class="video-container">
+                <iframe id="videoFrame" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div id="instrucoesExercicio" style="margin-top: 15px;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functions
+        function abrirFormularioIA() {
+            document.getElementById('modalFormulario').style.display = 'block';
+        }
+
+        function fecharModal() {
+            document.getElementById('modalFormulario').style.display = 'none';
+        }
+
+        function mostrarVideo(nome, videoUrl, instrucoes) {
+            document.getElementById('tituloExercicio').textContent = nome;
+            document.getElementById('videoFrame').src = videoUrl;
+            document.getElementById('instrucoesExercicio').innerHTML = '<strong>Instruções:</strong><br>' + (instrucoes || 'Nenhuma instrução disponível.');
+            document.getElementById('modalVideo').style.display = 'block';
+        }
+
+        function fecharVideo() {
+            document.getElementById('modalVideo').style.display = 'none';
+            document.getElementById('videoFrame').src = '';
+        }
+
+        // Filtro de treinos
+        function filtrarTreinos() {
+            const input = document.getElementById('pesquisaTreino');
+            const filter = input.value.toLowerCase();
+            const cards = document.querySelectorAll('.treino-card');
+            
+            cards.forEach(card => {
+                const nome = card.getAttribute('data-treino-nome');
+                if (nome.includes(filter)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Formulário IA
+        document.getElementById('formularioIA').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {
+                key: '{{ key }}',
+                idade: parseInt(formData.get('idade')),
+                peso: parseFloat(formData.get('peso')),
+                altura: parseInt(formData.get('altura')),
+                objetivo: formData.get('objetivo'),
+                nivel_experiencia: formData.get('nivel_experiencia'),
+                restricoes_medicas: formData.get('restricoes_medicas'),
+                dias_treino_semana: parseInt(formData.get('dias_treino_semana')),
+                tempo_treino_dia: parseInt(formData.get('tempo_treino_dia'))
+            };
+            
+            fetch('/api/salvar-formulario-ia', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert('Treinos gerados com sucesso!');
+                    fecharModal();
+                    location.reload(); // Recarregar para mostrar novos treinos
+                } else {
+                    alert('Erro: ' + result.message);
+                }
+            })
+            .catch(error => {
+                alert('Erro de conexão: ' + error.message);
+            });
+        });
+
+        function iniciarTreino(treinoId) {
+            // Aqui você pode implementar a lógica para iniciar o treino
+            alert(`Iniciando treino ID: ${treinoId}`);
+            // Redirecionar para página de execução do treino
+            // window.location.href = `/executar-treino/${treinoId}?key={{ key }}`;
+        }
+
+        // Fechar modais ao clicar fora
+        window.onclick = function(event) {
+            const modalForm = document.getElementById('modalFormulario');
+            const modalVideo = document.getElementById('modalVideo');
+            
+            if (event.target === modalForm) {
+                fecharModal();
+            }
+            if (event.target === modalVideo) {
+                fecharVideo();
+            }
+        }
+    </script>
+</body>
+</html>

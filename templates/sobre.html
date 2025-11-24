@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
+	<title>TimbuMuscle</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-esquerda">
+				<h1>TimbuMuscle</h1>
+				<a href="{{ url_for('auth.homepage') }}">HOME</a>
+				<a href="{{ url_for('auth.sobre') }}">SOBRE</a>
+			</div>
+			<div class="nav-direita">
+				<a class="botao-login" href="{{ url_for('auth.login') }}">LOGIN</a>
+			</div>
+        </nav>
+    </header>
+
+    <main>  
+        <div class="template">
+            <div class="explicacao">
+                <h2>Por que criamos o TimbuMuscle?</h2>
+                <p>O TimbuMuscle nasceu da vontade de transformar a maneira como as pessoas encaram o treino físico. Sabemos que muita gente tem dificuldade para montar um plano de exercícios eficiente, seja por falta de conhecimento, tempo ou orientação adequada. Pensando nisso, desenvolvemos uma plataforma que oferece treinos personalizados e acessíveis, que acompanham suas necessidades individuais.</p>
+
+                <p>Nosso objetivo é atender tanto quem está começando e não sabe por onde começar, quanto quem já treina regularmente, mas busca melhorar seus resultados e otimizar o desempenho. Com o TimbuMuscle, queremos democratizar o acesso a treinos de qualidade, que respeitam o seu corpo e o seu ritmo, para que você consiga atingir suas metas de forma segura e motivadora.</p>    
+            </div>
+
+            <div class="criadores">
+                <h2>Conheça os Criadores</h2>
+                <div class="equipe">
+                    <div class="membro">
+                        <div class="membro-inner">
+                            <img src="{{ url_for('static', filename='image/criador1.jpeg') }}" alt="Foto do Criador 1">
+                            <h3>Vinícius Teixeira</h3>
+                            <p>Desenvolvedor back-end</p>
+                        </div>
+                    </div>
+                    <div class="membro">
+                        <div class="membro-inner">
+                            <img src="{{ url_for('static', filename='image/criador2.jpeg') }}" alt="Foto do Criador 2">
+                            <h3>Márcio Rogerio</h3>
+                            <p>Estrutura do banco de dados</p>
+                        </div>
+                    </div>
+                    <div class="membro">
+                        <div class="membro-inner">
+                            <img src="{{ url_for('static', filename='image/criador3.jpeg') }}" alt="Foto do Criador 3">
+                            <h3>Daniel Oliveira</h3>
+                            <p>Design das interfaces</p>
+                        </div>
+                    </div>
+                    <div class="membro">
+                        <div class="membro-inner">
+                            <img src="{{ url_for('static', filename='image/criador4.jpeg') }}" alt="Foto do Criador 4">
+                            <h3>Fernando Barbosa</h3>
+                            <p>Desenvolvedor front-end</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

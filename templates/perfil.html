@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
+    <title>TimbuMuscle</title>
+</head>
+<body>
+    <header class="nav">
+        <nav>
+            <div class="nav-esquerda">
+                <h1>TimbuMuscle</h1>
+                <a href="{{ url_for('usuarios.usuarios', key=key) }}">HOME</a>
+                <a href="{{ url_for('usuarios.mostrar_treinos', key=key) }}">TREINOS</a>
+                <a href="{{ url_for('suporte.suporte', key=key) }}">SUPORTE</a>
+                
+            </div>
+            <div class="nav-direita-normal">
+                <a href="{{ url_for('usuarios.perfil', key=key) }}">PERFIL</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="nav">
+        <div class="profile-container">
+            <div class="profile-card">
+                <img src="{{ url_for('static', filename='image/profile.png') }}" alt="Foto do Usuário" class="profile-image">
+                <h2>{{ user.nome }}</h2>
+                <p>Email: {{ user.email }}</p>
+                <p>Telefone: {{ user.telefone }}</p>
+
+                <div class="progress-section">
+                    <label for="progresso">Progresso do Treino</label>
+                    <progress id="progresso" value="{{ user.progresso }}" max="100"></progress>
+                    <span>{{ user.progresso }}%</span>
+                </div>
+
+                <div class="profile-buttons">
+                    <a href="" class="btn-edit">Editar Perfil</a>
+                    <a href="{{ url_for('auth.login') }}" class="btn-treino">Sair</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

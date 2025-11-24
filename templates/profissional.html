@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimbuMuscle</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style3.css') }}">
+</head>
+<body data-key="{{ key }}">
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1>TimbuMuscle</h1>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="{{ url_for('profissional.profissional', key=key) }}" class="nav-item active">
+                    <i class="fas fa-users"></i> Alunos
+                </a>
+                <a href="{{ url_for('suporte.suporte_pro', key=key) }}" class="nav-item">
+                    <i class="fas fa-comment-medical"></i> Suporte
+                </a>
+                <a href="{{ url_for('auth.login') }}" class="nav-item">
+                    <i class="fas fa-home"></i> Sair
+                </a>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">{{ user.nome[0] }}</div>
+                <div>
+                    <div>{{ user.nome }}</div>
+                    <small>Profissional</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Pesquisar aluno..." id="searchInput">
+                </div>
+            </div>
+            
+            <!-- Dashboard Stats -->
+            <div class="dashboard-cards" id="statsContainer">
+                <!-- Será preenchido via JavaScript -->
+            </div>
+            
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" onclick="filtrarAlunos('todos')">Todos os Alunos</div>
+                <div class="tab" onclick="filtrarAlunos('ativos')">Com Treinos Ativos</div>
+                <div class="tab" onclick="filtrarAlunos('inativos')">Precisam de Acompanhamento</div>
+            </div>
+            
+            <!-- Students Table -->
+            <div class="table-container">
+                <table id="alunosTable">
+                    <thead>
+                        <tr>
+                            <th>Aluno</th>
+                            <th>Treino Atual</th>
+                            <th>Último Acesso</th>
+                            <th>Progresso</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="alunosBody">
+                        <!-- Será preenchido via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='profissional.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
+    <title>TimbuMuscle</title>
+</head>
+<body class="ajeitando-erros-esq">
+    <main class="ajeitando-erros-esq">
+
+        <div class="container-esq" id="container">
+
+            <div class="form-step active" id="step-email">
+                <h2 class="esq">Esqueceu a Senha?</h2>
+                <p class="esq">Informe o email associado à sua conta para receber o código de verificação.</p>
+                <input class="esq" type="email" id="email" placeholder="Seu email" required />
+                <button class="esq" id="btnSendEmail">Enviar Código</button>
+                <a class="link-login" href="{{ url_for('auth.login') }}">Voltar ao login</a>
+            </div>
+
+            <div class="form-step" id="step-confirm-email">
+                <h2 class="esq">Email Enviado!</h2>
+                <p class="esq">Enviamos um código para <span id="email-confirm"></span>. Verifique sua caixa de entrada.</p>
+                <button class="esq" id="btnNextToCode">Inserir Código</button>
+                <a class="link-login" href="{{ url_for('auth.login') }}">Voltar ao login</a>
+            </div>
+
+            <div class="form-step" id="step-code">
+                <h2 class="esq">Insira o Código</h2>
+                <p class="esq">Digite o código que você recebeu no email.</p>
+                <input class="esq" type="text" id="code" placeholder="Código de verificação" maxlength="6" required />
+                <button class="esq" id="btnConfirmCode" disabled>Confirmar Código</button>
+                <a class="link-login" href="{{ url_for('auth.login') }}">Voltar ao login</a>
+            </div>
+
+            <div class="form-step" id="step-new-password">
+                <h2 class="esq">Nova Senha</h2>
+                <p class="esq">Digite sua nova senha abaixo.</p>
+                <input class="esq" type="password" id="new-password" placeholder="Nova senha" minlength="6" required />
+                <input class="esq" type="password" id="confirm-password" placeholder="Confirme a nova senha" minlength="6" required />
+                <button class="esq" id="btnChangePassword" disabled>Alterar Senha</button>
+                <a class="link-login" href="{{ url_for('auth.login') }}">Voltar ao login</a>
+            </div>
+
+        </div>
+    </main>
+    <script src="{{ url_for('static', filename='esqueceu.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>TimbuMuscle</title>
+</head>
+<body>
+   <header>
+        <nav>
+            <div class="nav-esquerda">
+                <h1>TimbuMuscle</h1>
+                <a href="{{ url_for('usuarios.usuarios', key=key) }}">HOME</a>
+                <a href="{{ url_for('usuarios.mostrar_treinos', key=key) }}">TREINOS</a>
+                <a href="{{ url_for('suporte.suporte', key=key) }}">SUPORTE</a>
+                
+            </div>
+            <div class="nav-direita-normal">
+                <a href="{{ url_for('usuarios.perfil', key=key) }}">PERFIL</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard">
+        <div style="border-radius: 20px;" class="container">
+            <div class="dashboard-container">
+                
+                    <!-- Boas-vindas -->
+                    <section class="card welcome-card">
+                        <div class="welcome-content">
+                            <img src="{{ url_for('static', filename='image/profile.png') }}" alt="Foto de perfil do usuário" class="profile-img">
+                        
+                            <h2>Olá, <span class="user-name">{{ user.nome }}</span>!</h2>
+                        </div>    
+                    </section>
+            
+            <div class="card-container">
+                <!-- Progresso -->
+                <section class="card progress-card">
+                    <h3>Seu progresso atual</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ user.progresso }}%"></div>
+                    </div>
+                    <p class="progress-text">{{ user.progresso }}% concluído</p>
+                </section>
+
+                <!-- Próximo treino -->
+                <section class="card workout-card">
+                    <h3>Próximo treino</h3>
+                    <p class="workout-desc">????????</p>
+                    <a href="{{ url_for('usuarios.mostrar_treinos', key=key) }}" class="btn btn-outline">Ver detalhes</a>
+                </section>
+            </div>
+
+                <!-- Ações rápidas -->
+                <section class="actions-grid">
+                    <!-- No card do formulário -->
+                    <a href="{{ url_for('formulario.formulario', key=key) }}" class="card action-card">
+                        <span class="action-icon"><i class="fas fa-clipboard-list"></i></span>
+                        <h4>Preencher formulário</h4>
+                        {% if user.formulario_preenchido %}
+                        <span class="status-badge completo" style="position: absolute; top: 10px; right: 10px;">✓</span>
+                        {% endif %}
+                    </a>
+                    <a href="{{ url_for('usuarios.mostrar_treinos', key=key) }}" class="card action-card">
+                        <span class="action-icon"><i class="fas fa-dumbbell"></i></span>
+                        <h4>Meus treinos</h4>
+                    </a>
+                </section>
+
+                <!-- Dica -->
+                <section class="card tips-card">
+                    <h3>Dica do dia</h3>
+                    <p class="tip-content">Lembre-se de se hidratar antes e depois do treino!</p>
+                </section>
+
+            </div>
+        </div>
+    </main>
+</body>
+</html>
