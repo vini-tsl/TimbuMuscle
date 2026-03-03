@@ -1,0 +1,132 @@
+header.nav {
+	height: 20%;
+}
+
+main.nav {
+	height: 80%;
+}
+
+
+.form-container-treino {
+	background: #fff;
+	padding: 30px 40px;
+	margin-top: 60px;
+	border-radius: 12px;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+	width: 95%;
+	position: relative;
+}
+
+.progress-bar {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  background: #ddd;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.progress {
+  height: 100%;
+  background: #ff4b2b;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+#progress-text {
+  position: absolute;
+  top: -25px;
+  right: 0;
+  font-size: 14px;
+  color: #333;
+  font-weight: bold;
+}
+
+.form-step {
+  display: none;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-step.active {
+  display: flex;
+}
+
+.form-container-treino h2 {
+  font-size: 24px;
+  margin-bottom: 25px;
+  color: #333;
+  text-align: center;
+  width: 100%;
+}
+
+.radio-options {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.radio-option label {
+  font-size: 16px;
+  color: #333;
+  margin-left: 10px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  padding: 8px 0;
+}
+
+.radio-option input[type="radio"] {
+  margin: 0;
+  width: 18px;
+  height: 18px;
+  accent-color: #ff4b2b;
+  cursor: pointer;
+  position: relative;
+  top: 4px;
+}
+
+.checkbox-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.checkbox-option {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.checkbox-option label {
+  font-size: 16px;
+  color: #333;
+  margin-left: 10px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  padding: 8px 0;
+}
+
+.checkbox-option input[type="checkbox"] {
+  margin: 0;
+  width: 18px;
+  height: 18px;
+  accent-color: #ff4b2b;
+  cursor: pointer;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+}

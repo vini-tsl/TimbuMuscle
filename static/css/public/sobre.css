@@ -1,0 +1,113 @@
+.explicacao {
+	font-size: 20px;
+    padding: 40px 20px;
+	padding-bottom: 0px;
+    text-align: center;
+    background-color: #fefefe;
+    margin: auto;
+}
+
+.explicacao h2 {
+    color: #e63946;
+    margin-bottom: 15px;
+}
+
+.criadores {
+    background-color: #fefefe;
+    text-align: center;
+}
+
+.criadores h2 {
+    color: #1d3557;
+    margin-bottom: 30px;
+}
+
+.equipe {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.membro {
+    background-color: white;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeInUp 0.8s ease forwards;
+    transition: box-shadow 0.3s ease;
+    cursor: default;
+}
+
+.membro:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.membro img {
+    width: 220px;
+    height: 300px;
+    border-radius: 10px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.membro:hover img {
+    transform: scale(1.03);
+}
+
+.membro h3 {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    color: #222;
+    transition: color 0.3s ease;
+}
+
+.membro p {
+    color: #555;
+    transition: color 0.3s ease;
+}
+
+.membro:hover h3 {
+    color: #e63946;
+}
+
+.membro:hover p {
+    color: #1d3557;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.membro-inner {
+    transition: transform 0.3s ease;
+}
+
+.membro:hover .membro-inner {
+    transform: translateY(-10px);
+}
+
+.membro:nth-child(1) {
+    animation-delay: 0.1s;
+}
+.membro:nth-child(2) {
+    animation-delay: 0.3s;
+}
+.membro:nth-child(3) {
+    animation-delay: 0.5s;
+}
+.membro:nth-child(4) {
+    animation-delay: 0.7s;
+}

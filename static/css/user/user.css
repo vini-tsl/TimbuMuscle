@@ -1,0 +1,195 @@
+.container-user {
+    width: 100%;
+    max-width: 1500px;
+    height: 750px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+    background-color: var(--white);
+}
+
+.dashboard {
+    padding: var(--space-xl) 0;
+}
+
+.dashboard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /*gap: var(--space-lg);*/
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+}
+
+/* ===== CARDS ===== */
+.card {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.welcome-card {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.welcome-content {
+    display: flex;
+    align-items: center;
+   
+    width: 100%; /* Ocupa toda a largura disponível */
+    /*gap: var(--space-lg);*/
+}
+
+.user-name {
+    color: var(--primary);
+}
+
+.profile-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary);
+}
+
+/* Adicione isso ao seu arquivo CSS */
+.card-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* Aumentei o gap */
+    flex-wrap: wrap;
+    grid-column: 1 / -1;
+    margin: 20px 0; /* Adiciona margem para espaçamento */
+}
+
+.progress-card, 
+.workout-card {
+    flex: 1;
+    min-width: 400px;
+    max-width: 700px;
+}
+
+.progress-card h3,
+.workout-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+/* ===== SEÇÃO DE PROGRESSO ===== */
+.progress-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: var(--light);
+    border-radius: var(--radius-sm);
+    margin: var(--space-md) 0;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    background-color: var(--primary);
+    border-radius: var(--radius-sm);
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    font-weight: 600;
+    color: var(--primary);
+    text-align: right;
+}
+
+/* ===== SEÇÃO DE TREINO ===== */
+.workout-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.workout-desc {
+    font-size: 1.1rem;
+    margin-bottom: var(--space-lg);
+}
+
+/* ===== BOTÕES ===== */
+.btn {
+    display: inline-block;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.btn-outline:hover {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+/* ===== AÇÕES RÁPIDAS ===== */
+.actions-grid {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-lg);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.action-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-xl);
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    color: var(--dark);
+    transition: all 0.3s;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+.action-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-md);
+}
+
+/* ===== SEÇÃO DE DICAS ===== */
+.tips-card {
+    background-color: #fef3c7;
+    grid-column: 1 / -1;
+}
+
+.tip-content {
+    color: var(--dark);
+    font-size: 1.1rem;
+}

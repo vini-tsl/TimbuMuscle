@@ -1,0 +1,95 @@
+.profile-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+}
+
+.profile-card {
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border: 4px solid #ff4b2b;
+}
+
+.profile-card h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.profile-card p {
+    font-size: 16px;
+    margin: 5px 0;
+    color: #555;
+}
+
+.progress-section {
+    margin: 20px 0;
+    text-align: left;
+}
+
+.progress-section label {
+    font-size: 14px;
+    color: #333;
+}
+
+progress {
+    width: 100%;
+    height: 14px;
+    appearance: none;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+progress::-webkit-progress-bar {
+    background-color: #eee;
+}
+
+progress::-webkit-progress-value {
+    background-color: #ff4b2b;
+}
+
+.profile-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.profile-buttons a {
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.btn-edit {
+    background: #ccc;
+    color: #333;
+}
+
+.btn-edit:hover {
+    background: #aaa;
+}
+
+.btn-treino {
+    background: #ff4b2b;
+    color: white;
+}
+
+.btn-treino:hover {
+    background: #c93824;
+}

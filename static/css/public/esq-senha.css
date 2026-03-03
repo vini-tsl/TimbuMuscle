@@ -1,0 +1,104 @@
+.container-esq {
+    display: flex;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
+                0 10px 10px rgba(0,0,0,0.22);
+    width: 400px;
+    max-width: 100%;
+    padding: 40px 30px;
+    text-align: center;
+    justify-content: center;
+    align-items: center; 
+    position: relative;
+  }
+  
+  .ajeitando-erros-esq body {
+      height: 100vh;
+  }
+  
+  .ajeitando-erros-esq main {
+      height: 100vh;
+  }
+  
+  .esq h2 {
+    color: #FF4B2B;
+    margin-bottom: 25px;
+    font-weight: 800;
+    font-size: 28px;
+  }
+  
+  .esq p {
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  
+  .esq input {
+    background-color: #eee;
+    border: none;
+    padding: 12px 15px;
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+  
+  .esq button {
+    border-radius: 20px;
+    border: 1px solid #FF4B2B;
+    background-color: #FF4B2B;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 40px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .esq button:hover {
+    background-color: #ce4f39;
+  }
+  
+  .esq button:disabled {
+    background-color: #f7b4af;
+    border-color: #f7b4af;
+    cursor: not-allowed;
+  }
+  
+  .form-step {
+    display: none;
+    animation: fadeIn 0.5s ease forwards;
+  }
+  
+  .form-step.active {
+    display: block;
+  }
+  
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+  
+  .message {
+    color: #444;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+  
+  .link-login {
+    display: block;
+    margin-top: 25px;
+    font-size: 14px;
+    color: #FF4B2B;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .link-login:hover {
+    text-decoration: underline;
+  }	

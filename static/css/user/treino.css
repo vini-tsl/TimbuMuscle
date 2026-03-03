@@ -1,0 +1,148 @@
+.treinos-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.treino-card {
+    width: calc(33.333% - 20px);
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+/* Primeiro treino - em andamento (cores normais) */
+.treino-card:first-child {
+    opacity: 1;
+    border: 2px solid #ff3f3f;
+}
+
+.treino-card:first-child .treino-header {
+    background-color: #ff3f3f;
+    color: white;
+}
+
+.treino-card:first-child .btn-treino {
+    background-color: #ff3f3f;
+    color: white;
+}
+
+/* Demais treinos - próximos (esmaecidos) */
+.treino-card:not(:first-child) {
+    opacity: 0.7;
+    filter: grayscale(30%);
+    background-color: #f8f8f8;
+}
+
+.treino-card:not(:first-child) .treino-header {
+    background-color: #a0a0a0;
+    color: #f0f0f0;
+}
+
+.treino-card:not(:first-child) .btn-treino {
+    background-color: #a0a0a0;
+    color: #f0f0f0;
+}
+
+/* Efeito hover para normalizar os próximos treinos */
+.treino-card:hover {
+    opacity: 1;
+    filter: grayscale(0%);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+}
+
+.treino-card:hover .treino-header {
+    background-color: #ff3f3f;
+    color: white;
+}
+
+.treino-card:hover .btn-treino {
+    background-color: #ff3f3f;
+    color: white;
+}
+
+.treino-header {
+    padding: 15px;
+    text-align: center;
+    font-weight: 800;
+    transition: all 0.3s ease;
+}
+
+.treino-content {
+    padding: 20px;
+}
+
+.treino-content p {
+    margin-bottom: 12px;
+    color: #555;
+}
+
+.treino-content ul {
+    list-style-type: none;
+    margin-top: 15px;
+}
+
+.treino-content li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+}
+
+.treino-content li:before {
+    content: "•";
+    color: #ff3f3f;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-right: 10px;
+}
+
+.treino-footer {
+    padding: 15px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+}
+
+.btn-treino {
+    background-color: #ff3f3f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-treino:hover {
+    background-color: #e53535;
+    transform: scale(1.05);
+}
+
+.status-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.em-andamento {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.proximo-treino {
+    background-color: #9e9e9e;
+    color: white;
+}
