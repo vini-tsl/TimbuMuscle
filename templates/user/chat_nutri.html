@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelpMuscle</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/nav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user/chats.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-esquerda">
+                <h1>HelpMuscle</h1>
+                <a href="{{ url_for('usuarios.usuarios', key=key) }}">HOME</a>
+                <a href="{{ url_for('usuarios.mostrar_treinos', key=key) }}">TREINOS</a>
+                <a href="{{ url_for('suporte.suporte', key=key) }}">SUPORTE</a>
+            </div>
+            <div class="nav-direita-normal">
+                <a href="{{ url_for('usuarios.perfil', key=key) }}">PERFIL</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            Suporte com Nutricionista
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message received">
+                Olá! Sou o nutricionista do TimbuMuscle. Como posso te ajudar hoje?
+            </div>
+            <div class="message sent">
+                Gostaria de ajuda com meu plano alimentar
+            </div>
+            <div class="message received">
+                Claro! Posso te ajudar com isso. Você está seguindo algum plano específico atualmente?
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="message-input" placeholder="Digite sua mensagem...">
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+
+    <a href="{{ url_for('suporte.suporte', key=key) }}" class="back-button">Voltar para opções de suporte</a>
+
+    <script>
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const message = input.value.trim();
+            
+            if (message) {
+                const chat = document.getElementById('chat-messages');
+                const newMessage = document.createElement('div');
+                newMessage.className = 'message sent';
+                newMessage.textContent = message;
+                chat.appendChild(newMessage);
+                
+                input.value = '';
+                
+                chat.scrollTop = chat.scrollHeight;
+                
+                setTimeout(() => {
+                    const responses = [
+                        "Entendi. Vou ver como posso te ajudar com isso.",
+                        "Ótima pergunta! Deixe-me pensar sobre isso.",
+                        "Posso te sugerir algumas opções para isso.",
+                        "Isso é algo que podemos trabalhar juntos."
+                    ];
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    
+                    const reply = document.createElement('div');
+                    reply.className = 'message received';
+                    reply.textContent = randomResponse;
+                    chat.appendChild(reply);
+                    
+                    chat.scrollTop = chat.scrollHeight;
+                }, 1000);
+            }
+        }
+        
+        document.getElementById('message-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

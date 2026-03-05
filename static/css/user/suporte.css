@@ -30,3 +30,21 @@
     margin-top: 15px;
     color: #333;
 }
+
+.option {
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 2px solid transparent;
+}
+.option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    border-color: #FF4B2B;
+}
+.chamado-ativo {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border-left: 4px solid #FF4B2B;
+}

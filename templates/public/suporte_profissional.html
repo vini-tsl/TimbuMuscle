@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelpMuscle</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <h1>HelpMuscle</h1>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="{{ url_for('profissional.profissional', key=key) }}" class="nav-item">
+                    <i class="fas fa-users"></i> Alunos
+                </a>
+                <a href="{{ url_for('suporte.suporte_pro', key=key) }}" class="nav-item active">
+                    <i class="fas fa-comment-medical"></i> Suporte
+                </a>
+                <a href="{{ url_for('auth.login') }}" class="nav-item">
+                    <i class="fas fa-home"></i> Sair
+                </a>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">{{ user.nome[0] }}</div>
+                <div>
+                    <div>{{ user.nome }}</div>
+                    <small>Profissional</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1 class="page-title">Suporte aos Alunos</h1>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Pesquisar conversas..." id="searchInput">
+                </div>
+            </div>
+            
+            <!-- Chat Container -->
+            <div class="chat-container">
+                <!-- Lista de Contatos -->
+                <div class="contacts-list">
+                    <div class="contacts-header">
+                        <h2>Conversas</h2>
+                    </div>
+
+                    <div class="contact-filter">
+                        <div class="filter-options">
+                            <div class="filter-option active" data-filter="all">Todos</div>
+                            <div class="filter-option" data-filter="aberto">Abertos</div>
+                            <div class="filter-option" data-filter="fechado">Fechados</div>
+                        </div>
+                    </div>
+                    
+                    <div class="contacts" id="contactsList">
+                        <!-- Contatos serão carregados via JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Área de Chat -->
+                <div class="chat-area">
+                    <div class="chat-header" id="chatHeader" style="display: none;">
+                        <div class="chat-user">
+                            <div class="chat-user-avatar" id="currentChatAvatar"></div>
+                            <div class="chat-user-info">
+                                <h3 id="currentChatName"></h3>
+                                <span id="currentChatStatus"></span>
+                            </div>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="close-chamado-btn" id="closeChatBtn" style="display: none;">
+                                <i class="fas fa-lock"></i> Fechar Chamado
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="messages-container" id="messagesContainer">
+                        <div class="no-chat-selected" id="noChatSelected">
+                            <i class="fas fa-comments"></i>
+                            <h3>Nenhuma conversa selecionada</h3>
+                            <p>Selecione uma conversa para começar a enviar mensagens</p>
+                        </div>
+                    </div>
+                    
+                    <div class="message-input" id="messageInputContainer" style="display: none;">
+                        <input type="text" placeholder="Digite uma mensagem..." id="messageInput">
+                        <button class="send-btn" id="sendMessageBtn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const key = '{{ key }}';
+        let currentChatId = null;
+        let chats = [];
+
+        // Carregar dados ao iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadChats();
+            setupEventListeners();
+            startAutoRefresh();
+        });
+
+        // Carregar lista de chats
+        async function loadChats() {
+            try {
+                const response = await fetch(`/api/chamados-profissional/${key}`);
+                
+                if (!response.ok) {
+                    throw new Error('Erro na resposta do servidor');
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    chats = data.chamados || [];
+                    renderChatsList();
+                    
+                    // Se havia um chat aberto, tentar reabri-lo
+                    if (currentChatId) {
+                        const currentChat = chats.find(chat => chat.id === currentChatId);
+                        if (currentChat) {
+                            openChat(currentChat);
+                        } else {
+                            // Se o chat atual não existe mais, mostrar estado inicial
+                            showNoChatSelected();
+                        }
+                    }
+                } else {
+                    console.error('Erro ao carregar chats:', data.message);
+                    showEmptyState();
+                }
+            } catch (error) {
+                console.error('Erro ao carregar chats:', error);
+                showEmptyState();
+            }
+        }
+
+        // Mostrar estado vazio
+        function showEmptyState() {
+            const contactsList = document.getElementById('contactsList');
+            contactsList.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <h3>Nenhum chamado encontrado</h3>
+                    <p>Quando alunos abrirem chamados, eles aparecerão aqui.</p>
+                </div>
+            `;
+        }
+
+        // Renderizar lista de chats
+        function renderChatsList() {
+            const contactsList = document.getElementById('contactsList');
+            
+            if (chats.length === 0) {
+                showEmptyState();
+                return;
+            }
+
+            contactsList.innerHTML = '';
+
+            chats.forEach(chat => {
+                const contactEl = document.createElement('div');
+                contactEl.className = 'contact';
+                contactEl.dataset.chatId = chat.id;
+                contactEl.dataset.status = chat.status;
+                
+                contactEl.innerHTML = `
+                    <div class="contact-avatar">${chat.usuario.nome[0]}</div>
+                    <div class="contact-info">
+                        <div class="contact-name">${chat.usuario.nome}</div>
+                        <div class="contact-lastmsg">${chat.ultima_mensagem}</div>
+                    </div>
+                    <div class="contact-meta">
+                        <div class="contact-time">${chat.data_ultima_mensagem}</div>
+                        ${chat.mensagens_nao_lidas > 0 ? `<div class="contact-unread">${chat.mensagens_nao_lidas}</div>` : ''}
+                    </div>
+                `;
+
+                contactEl.addEventListener('click', () => openChat(chat));
+                contactsList.appendChild(contactEl);
+            });
+
+            // Aplicar filtro atual
+            applyCurrentFilter();
+        }
+
+        // Abrir chat
+        function openChat(chat) {
+            if (!chat) {
+                console.error('Chat não encontrado');
+                return;
+            }
+            
+            currentChatId = chat.id;
+            
+            // Atualizar header
+            const currentChatAvatar = document.getElementById('currentChatAvatar');
+            const currentChatName = document.getElementById('currentChatName');
+            const currentChatStatus = document.getElementById('currentChatStatus');
+            
+            if (currentChatAvatar && currentChatName && currentChatStatus) {
+                currentChatAvatar.textContent = chat.usuario.nome[0];
+                currentChatName.textContent = chat.usuario.nome;
+                currentChatStatus.textContent = chat.status === 'aberto' ? 'Online' : 'Chamado Fechado';
+            }
+
+            // Mostrar/ocultar elementos
+            const chatHeader = document.getElementById('chatHeader');
+            const messageInputContainer = document.getElementById('messageInputContainer');
+            const noChatSelected = document.getElementById('noChatSelected');
+            const closeChatBtn = document.getElementById('closeChatBtn');
+            
+            if (chatHeader) chatHeader.style.display = 'flex';
+            if (messageInputContainer) messageInputContainer.style.display = chat.status === 'aberto' ? 'flex' : 'none';
+            if (noChatSelected) noChatSelected.style.display = 'none';
+            if (closeChatBtn) closeChatBtn.style.display = chat.status === 'aberto' ? 'block' : 'none';
+
+            // Carregar mensagens
+            renderMessages(chat.mensagens);
+
+            // Marcar como ativo na lista
+            document.querySelectorAll('.contact').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const activeContact = document.querySelector(`.contact[data-chat-id="${chat.id}"]`);
+            if (activeContact) {
+                activeContact.classList.add('active');
+            }
+
+            // Marcar mensagens como lidas
+            if (chat.mensagens_nao_lidas > 0) {
+                markMessagesAsRead(chat.id);
+            }
+        }
+
+        // Renderizar mensagens
+        function renderMessages(messages) {
+            const messagesContainer = document.getElementById('messagesContainer');
+            messagesContainer.innerHTML = '';
+
+            if (messages.length === 0) {
+                messagesContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-comments"></i>
+                        <h3>Nenhuma mensagem ainda</h3>
+                        <p>Seja o primeiro a enviar uma mensagem!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            messages.forEach(message => {
+                const messageEl = document.createElement('div');
+                const isSent = message.remetente_id === {{ user.id }};
+                
+                messageEl.className = `message ${isSent ? 'sent' : 'received'}`;
+                messageEl.innerHTML = `
+                    <div class="message-content">${message.conteudo}</div>
+                    <div class="message-time">${message.data_envio}</div>
+                `;
+
+                messagesContainer.appendChild(messageEl);
+            });
+
+            // Scroll para o final
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Configurar event listeners
+        function setupEventListeners() {
+            // Enviar mensagem
+            document.getElementById('sendMessageBtn').addEventListener('click', sendMessage);
+            document.getElementById('messageInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            // Fechar chamado
+            document.getElementById('closeChatBtn').addEventListener('click', closeChat);
+
+            // Pesquisa
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                const term = e.target.value.toLowerCase();
+                filterChats(term);
+            });
+
+            // Filtros
+            document.querySelectorAll('.filter-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remover classe active de todos
+                    document.querySelectorAll('.filter-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    
+                    // Adicionar classe active ao selecionado
+                    this.classList.add('active');
+                    
+                    // Aplicar filtro
+                    applyCurrentFilter();
+                });
+            });
+        }
+
+        // Aplicar filtro atual
+        function applyCurrentFilter() {
+            const activeFilter = document.querySelector('.filter-option.active').dataset.filter;
+            const contacts = document.querySelectorAll('.contact');
+            
+            contacts.forEach(contact => {
+                if (activeFilter === 'all') {
+                    contact.style.display = 'flex';
+                } else {
+                    contact.style.display = contact.dataset.status === activeFilter ? 'flex' : 'none';
+                }
+            });
+        }
+
+        // Filtrar chats por pesquisa
+        function filterChats(term) {
+            const contacts = document.querySelectorAll('.contact');
+            
+            contacts.forEach(contact => {
+                const contactName = contact.querySelector('.contact-name').textContent.toLowerCase();
+                const contactMsg = contact.querySelector('.contact-lastmsg').textContent.toLowerCase();
+                
+                if (contactName.includes(term) || contactMsg.includes(term)) {
+                    contact.style.display = 'flex';
+                } else {
+                    contact.style.display = 'none';
+                }
+            });
+        }
+
+       // Enviar mensagem
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message || !currentChatId) {
+                alert('Selecione um chat para enviar mensagem');
+                return;
+            }
+
+            const sendBtn = document.getElementById('sendMessageBtn');
+            if (sendBtn) {
+                sendBtn.disabled = true;
+                sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            }
+
+            try {
+                const response = await fetch('/api/enviar-mensagem-profissional', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        key: key,
+                        chamado_id: currentChatId,
+                        mensagem: message
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    input.value = '';
+                    // Recarregar chats para atualizar a lista
+                    await loadChats();
+                    // Reabrir o chat atual para mostrar a nova mensagem
+                    const currentChat = chats.find(chat => chat.id === currentChatId);
+                    if (currentChat) {
+                        openChat(currentChat);
+                    } else {
+                        // Se não encontrou o chat, mostrar estado inicial
+                        showNoChatSelected();
+                    }
+                } else {
+                    alert('Erro ao enviar mensagem: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro de conexão');
+            } finally {
+                if (sendBtn) {
+                    sendBtn.disabled = false;
+                    sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i>';
+                }
+            }
+        }
+
+        // Fechar chamado
+        async function closeChat() {
+            if (!currentChatId || !confirm('Tem certeza que deseja fechar este chamado? Esta ação é irreversível.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/fechar-chamado-profissional', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        key: key,
+                        chamado_id: currentChatId
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('Chamado fechado com sucesso!');
+                    await loadChats();
+                    // Atualizar chat atual se estiver aberto
+                    const currentChat = chats.find(chat => chat.id === currentChatId);
+                    if (currentChat) {
+                        openChat(currentChat);
+                    }
+                } else {
+                    alert('Erro ao fechar chamado: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro de conexão');
+            }
+        }
+
+        // Marcar mensagens como lidas
+        async function markMessagesAsRead(chatId) {
+            try {
+                await fetch('/api/marcar-mensagens-lidas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        key: key,
+                        chamado_id: chatId
+                    })
+                });
+                
+                // Atualizar a lista para remover os badges
+                await loadChats();
+            } catch (error) {
+                console.error('Erro ao marcar mensagens como lidas:', error);
+            }
+        }
+
+        // Atualização automática
+        function startAutoRefresh() {
+            setInterval(() => {
+                loadChats();
+            }, 5000); // Atualiza a cada 5 segundos
+        }
+
+        // Mostrar estado sem chat selecionado
+        function showNoChatSelected() {
+            const chatHeader = document.getElementById('chatHeader');
+            const messageInputContainer = document.getElementById('messageInputContainer');
+            const noChatSelected = document.getElementById('noChatSelected');
+            const messagesContainer = document.getElementById('messagesContainer');
+            
+            if (chatHeader) chatHeader.style.display = 'none';
+            if (messageInputContainer) messageInputContainer.style.display = 'none';
+            if (noChatSelected) noChatSelected.style.display = 'flex';
+            if (messagesContainer) messagesContainer.innerHTML = '';
+            
+            // Remover classe active de todos os contatos
+            document.querySelectorAll('.contact').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            currentChatId = null;
+        }
+    </script>
+</body>
+</html>             
