@@ -30,7 +30,7 @@ def chat_suporte(chamado_id):
     
     mensagens = MensagemSuporte.query.filter_by(chamado_id=chamado_id).order_by(MensagemSuporte.data_envio).all()
     
-    return render_template('chat_suporte.html', 
+    return render_template('user/chat_suporte.html', 
                          key=key, 
                          user=user, 
                          chamado=chamado, 

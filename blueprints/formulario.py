@@ -16,7 +16,7 @@ def formulario(key):
     #if usuario.formulario_preenchido:
         #return redirect(url_for('usuarios.usuarios', key=key))
     
-    return render_template('formulario.html', user=usuario, key=key)
+    return render_template('user/formulario.html', user=usuario, key=key)
 
 @formulario_bp.route('/api/salvar-formulario', methods=['POST'])
 def salvar_formulario():

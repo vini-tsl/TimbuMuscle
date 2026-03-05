@@ -46,11 +46,11 @@ def enviar_codigo_por_email(destinatario, codigo):
 
 @auth_bp.route("/")
 def homepage():
-    return render_template("index.html")
+    return render_template("public/index.html")
 
 @auth_bp.route("/sobre")
 def sobre():
-    return render_template("sobre.html")
+    return render_template("public/sobre.html")
 
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
@@ -67,7 +67,7 @@ def login():
 
         return render_template("login.html", erro="Credenciais inválidas")
 
-    return render_template("login.html")
+    return render_template("public/login.html")
 
 @auth_bp.route("/registrar", methods=["POST"])
 def registrar():
@@ -100,11 +100,11 @@ def registrar():
     try:
         db.session.add(novo_usuario)
         db.session.commit()
-        return render_template("login.html", sucesso="Cadastro realizado com sucesso!")
+        return render_template("public/login.html", sucesso="Cadastro realizado com sucesso!")
     
     except IntegrityError:
         db.session.rollback()
-        return render_template("login.html", erro="Erro ao cadastrar usuário. Tente novamente.")
+        return render_template("public/login.html", erro="Erro ao cadastrar usuário. Tente novamente.")
 
 @auth_bp.route("/esq_senha", methods=["GET", "POST"])
 def esq_senha():
@@ -128,7 +128,7 @@ def esq_senha():
 
         return jsonify({"message": "Código enviado para o email."})
     
-    return render_template("esq_senha.html")
+    return render_template("public/esq_senha.html")
 
 @auth_bp.route("/verificar_codigo", methods=["POST"])
 def verificar_codigo():

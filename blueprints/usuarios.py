@@ -20,42 +20,42 @@ def usuarios(key):
     user = buscar_usuario_por_key(key)
     if not user:
         return redirect(url_for('auth.login'))
-    return render_template("usuarios.html", key=key, user=user)
+    return render_template("user/usuarios.html", key=key, user=user)
 
 @usuarios_bp.route("/formulario/<key>")
 def formulario(key):
     user = buscar_usuario_por_key(key)
     if not user:
         return redirect(url_for('auth.login'))
-    return render_template("formulario.html", key=key, user=user)
+    return render_template("user/formulario.html", key=key, user=user)
 
 @usuarios_bp.route("/treino/<key>")
 def mostrar_treinos(key):
     user = buscar_usuario_por_key(key)
     if not user:
         return redirect(url_for('auth.login'))
-    return render_template('treinos.html', key=key, user=user)
+    return render_template('user/treinos.html', key=key, user=user)
 
 @usuarios_bp.route("/perfil/<key>", methods=['GET', 'POST'])
 def perfil(key):
     user = buscar_usuario_por_key(key)
     if not user:
         return redirect(url_for('auth.login'))
-    return render_template("perfil.html", key=key, user=user)
+    return render_template("user/perfil.html", key=key, user=user)
 
 @usuarios_bp.route("/chat_nutri/<key>")
 def chat_nutri(key):
     user = buscar_usuario_por_key(key)
     if not user:
         return redirect(url_for('auth.login'))
-    return render_template("chat_nutri.html", key=key, user=user)
+    return render_template("user/chat_nutri.html", key=key, user=user)
 
 @usuarios_bp.route("/chat_personal/<key>")
 def chat_personal(key):
     user = buscar_usuario_por_key(key)
     if not user:
         return redirect(url_for('auth.login'))
-    return render_template("chat_personal.html", key=key, user=user)
+    return render_template("user/chat_personal.html", key=key, user=user)
 
 @usuarios_bp.route('/executar-treino/<int:treino_id>/<key>')
 def executar_treino(treino_id, key):
@@ -67,7 +67,7 @@ def executar_treino(treino_id, key):
     if not treino or treino.aluno_id != usuario.id:
         return "Treino não encontrado", 404
     
-    return render_template('executar_treino.html', 
+    return render_template('user/executar_treino.html', 
                          user=usuario, 
                          key=key, 
                          treino=treino)

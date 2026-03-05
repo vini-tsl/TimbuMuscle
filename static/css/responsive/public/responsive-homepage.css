@@ -1,0 +1,107 @@
+/* ============================= */
+/* 📱 RESPONSIVIDADE CELULAR */
+/* ============================= */
+
+@media (max-width: 768px) {
+
+	.fotos {
+		gap: 15px;
+		margin-top: 10px;
+	}
+
+	.button-comercial {
+		font-size: 16px;
+		padding: 14px 35px;
+		width: 100%;
+		max-width: 320px;
+	}
+
+	.bem-vindo {
+		padding: 30px 15px 0;
+	}
+
+	.bem-vindo h1 {
+		font-size: 28px;
+	}
+
+	.bem-vindo h2 {
+		font-size: 20px;
+	}
+
+	.bem-vindo p {
+		font-size: 16px;
+	}
+
+	.diferenciais {
+		margin: 40px auto;
+		padding: 0 15px;
+	}
+
+	.diferenciais h2 {
+		font-size: 24px;
+		margin-bottom: 25px;
+	}
+
+	.diferenciais h3 {
+		font-size: 20px;
+	}
+
+	.diferenciais p {
+		font-size: 16px;
+		line-height: 1.6;
+	}
+
+	.motivos-container {
+		gap: 20px;
+		padding: 0 10px;
+	}
+
+	.motivo-card {
+		flex: 1 1 100%;
+		max-width: 100%;
+	}
+
+	.motivo-card h3 {
+		font-size: 18px;
+	}
+
+	.motivo-card p {
+		font-size: 15px;
+	}
+
+	.motivos p {
+		font-size: 16px;
+		padding: 0 10px;
+	}
+
+	.motivos-titulo {
+		font-size: 26px;
+		margin-bottom: 25px;
+	}
+
+}
+
+@media (max-width: 480px) {
+
+	.bem-vindo h1 {
+		font-size: 24px;
+	}
+
+	.bem-vindo h2 {
+		font-size: 18px;
+	}
+
+	.bem-vindo p {
+		font-size: 15px;
+	}
+
+	.button-comercial {
+		font-size: 15px;
+		padding: 12px 25px;
+	}
+
+	.motivos-titulo {
+		font-size: 22px;
+	}
+
+}

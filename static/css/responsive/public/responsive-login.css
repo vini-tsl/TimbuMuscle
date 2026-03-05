@@ -1,0 +1,48 @@
+/* ============================= */
+/* 📱 RESPONSIVIDADE CELULAR */
+/* ============================= */
+
+@media (max-width: 768px) {
+
+	.container {
+		min-height: auto;
+	}
+
+	.form-container {
+		position: relative;
+		width: 100%;
+		height: auto;
+		transform: none !important;
+	}
+
+	.sign-in-container,
+	.sign-up-container {
+		width: 100%;
+		left: 0;
+		opacity: 1;
+		z-index: 2;
+		transform: none !important;
+	}
+
+	.sign-up-container {
+		margin-top: 30px;
+	}
+
+	.overlay-container {
+		display: none;
+	}
+
+	.forms {
+		height: auto;
+		padding: 20px 0;
+	}
+
+}
+
+@media (max-width: 480px) {
+
+	.form-container form {
+		padding: 20px;
+	}
+
+}

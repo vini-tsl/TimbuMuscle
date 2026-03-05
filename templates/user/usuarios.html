@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user/user.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/nav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive/public/responsive-base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive/public/responsive-nav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive/user/responsive-user.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>HelpMuscle</title>
@@ -14,7 +19,7 @@
             <div class="nav-esquerda">
                 <h1>HelpMuscle</h1>
                 <a href="{{ url_for('usuarios.usuarios', key=key) }}">HOME</a>
-                <a href="{{ url_for('usuarios.mostrar_treinos', key=key) }}">TREINOS</a>
+                <a href="{{ url_for('treinos.mostrar_treinos', key=key) }}">TREINOS</a>
                 <a href="{{ url_for('suporte.suporte', key=key) }}">SUPORTE</a>
                 
             </div>
@@ -33,7 +38,7 @@
                         <div class="welcome-content">
                             <img src="{{ url_for('static', filename='image/profile.png') }}" alt="Foto de perfil do usuário" class="profile-img">
                         
-                            <h2>Olá, <span class="user-name">{{ user.nome }}</span>!</h2>
+                            <h2>Olá, <span style="font-size: 100%;" class="user-name">{{ user.nome }}</span>!</h2>
                         </div>    
                     </section>
             

@@ -1,0 +1,112 @@
+/* ============================= */
+/* 📱 RESPONSIVIDADE CELULAR USER */
+/* ============================= */
+
+@media (max-width: 1024px) {
+    .container-user {
+        padding: 0 var(--space-md);
+        height: auto; /* Ajusta altura automaticamente */
+    }
+
+    .progress-card, 
+    .workout-card {
+        min-width: 300px;
+        max-width: 100%;
+    }
+
+    .card-container {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: auto;
+    }
+
+    .welcome-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+    }
+
+    .welcome-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .card-container {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-md);
+    }
+
+    .progress-card h3,
+    .workout-card h3 {
+        font-size: 1rem;
+    }
+
+    .workout-desc {
+        font-size: 1rem;
+    }
+
+    .btn {
+        width: 100%;
+        padding: var(--space-sm) 0;
+    }
+
+    .action-card {
+        padding: var(--space-md);
+        width: 100%;
+    }
+
+    .action-icon {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container-user {
+        padding: 0 var(--space-sm);
+    }
+
+    .profile-img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .progress-card, 
+    .workout-card,
+    .action-card {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .progress-card h3,
+    .workout-card h3,
+    .workout-desc,
+    .tip-content {
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        font-size: 0.9rem;
+    }
+
+    .action-icon {
+        font-size: 1.8rem;
+    }
+
+    .tips-card {
+        padding: var(--space-md);
+    }
+}

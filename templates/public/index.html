@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/nav.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/homepage.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive/public/responsive-base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive/public/responsive-nav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive/public/responsive-homepage.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="icon" href="{{ url_for('static', filename='image/fav.png') }}" type="image/png">
     <title>HelpMuscle</title>
@@ -27,7 +30,13 @@
         <div class="template">
             <div class="bem-vindo">
                 <h1>BEM-VINDO AO TIMBUMUSCLE</h1>
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/b6CbIpgN6GA?si=fxf_lSvxTep50Luj"></iframe>
+                <!-- Seção de vídeo explicativo no topo da homepage -->
+                <section class="video-intro">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/b6CbIpgN6GA?si=fxf_lSvxTep50Luj" 
+                                frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </section>
                 <h2>Treinos Personalizados para Você Alcançar o Máximo Desempenho</h2>
                 <p>Rotinas únicas, resultados reais. Seu treino do seu jeito.</p>
             </div>

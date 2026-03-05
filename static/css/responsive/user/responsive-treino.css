@@ -1,0 +1,52 @@
+/* ============================= */
+/* 📱 RESPONSIVIDADE CELULAR TREINOS */
+/* ============================= */
+
+@media (max-width: 1024px) {
+    .treino-card {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 768px) {
+    .treino-card {
+        width: 100%;
+    }
+
+    .treino-content p,
+    .treino-content li {
+        font-size: 14px;
+    }
+
+    .btn-treino {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .status-badge {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .treino-card {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .treino-content p,
+    .treino-content li {
+        font-size: 13px;
+    }
+
+    .btn-treino {
+        width: 100%;
+        padding: 8px 0;
+    }
+
+    .status-badge {
+        font-size: 10px;
+        padding: 3px 6px;
+    }
+}

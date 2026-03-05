@@ -1,0 +1,76 @@
+/* ============================= */
+/* 📱 RESPONSIVIDADE CELULAR */
+/* ============================= */
+
+@media (max-width: 768px) {
+
+	header.nav {
+		height: auto;
+	}
+
+	main.nav {
+		height: auto;
+	}
+
+	.form-container-treino {
+		padding: 25px 20px;
+		margin-top: 30px;
+		width: 100%;
+	}
+
+	.form-container-treino h2 {
+		font-size: 20px;
+		margin-bottom: 20px;
+	}
+
+	.radio-option label,
+	.checkbox-option label {
+		font-size: 15px;
+	}
+
+	.radio-option input[type="radio"],
+	.checkbox-option input[type="checkbox"] {
+		width: 16px;
+		height: 16px;
+	}
+
+	.progress-bar {
+		height: 6px;
+	}
+
+	#progress-text {
+		font-size: 12px;
+		top: -20px;
+	}
+
+	.btn-group {
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.btn-group button {
+		width: 100%;
+	}
+
+}
+
+@media (max-width: 480px) {
+
+	.form-container-treino {
+		padding: 20px 15px;
+	}
+
+	.form-container-treino h2 {
+		font-size: 18px;
+	}
+
+	.radio-option label,
+	.checkbox-option label {
+		font-size: 14px;
+	}
+
+	#progress-text {
+		font-size: 11px;
+	}
+
+}

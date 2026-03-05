@@ -1,0 +1,68 @@
+/* ============================= */
+/* 📱 RESPONSIVIDADE CELULAR */
+/* ============================= */
+
+@media (max-width: 768px) {
+
+	.profile-container {
+		margin-top: 30px;
+		padding: 0 15px;
+	}
+
+	.profile-card {
+		padding: 25px 20px;
+	}
+
+	.profile-image {
+		width: 100px;
+		height: 100px;
+	}
+
+	.profile-card h2 {
+		font-size: 20px;
+	}
+
+	.profile-card p {
+		font-size: 15px;
+	}
+
+	progress {
+		height: 12px;
+	}
+
+	.profile-buttons {
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.profile-buttons a {
+		width: 100%;
+		text-align: center;
+	}
+
+}
+
+@media (max-width: 480px) {
+
+	.profile-card {
+		padding: 20px 15px;
+	}
+
+	.profile-image {
+		width: 90px;
+		height: 90px;
+	}
+
+	.profile-card h2 {
+		font-size: 18px;
+	}
+
+	.profile-card p {
+		font-size: 14px;
+	}
+
+	progress {
+		height: 10px;
+	}
+
+}

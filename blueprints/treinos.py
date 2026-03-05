@@ -21,7 +21,7 @@ def mostrar_treinos(key):
         progresso = Progresso.query.filter_by(aluno_id=usuario.id, treino_id=treino.id).first()
         progressos[treino.id] = progresso.porcentagem if progresso else 0
     
-    return render_template('treinos.html', 
+    return render_template('user/treinos.html', 
                          user=usuario, 
                          key=key, 
                          treinos=treinos, 

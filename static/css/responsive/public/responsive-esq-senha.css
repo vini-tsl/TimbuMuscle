@@ -1,0 +1,67 @@
+/* ============================= */
+/* 📱 RESPONSIVIDADE CELULAR */
+/* ============================= */
+
+@media (max-width: 768px) {
+
+	.container-esq {
+	  width: 100%;
+	  padding: 30px 20px;
+	  border-radius: 12px;
+	}
+  
+	.esq h2 {
+	  font-size: 24px;
+	  margin-bottom: 20px;
+	}
+  
+	.esq p {
+	  font-size: 15px;
+	  margin-bottom: 20px;
+	}
+  
+	.esq input {
+	  font-size: 15px;
+	  padding: 10px 12px;
+	}
+  
+	.esq button {
+	  font-size: 14px;
+	  padding: 12px 30px;
+	  width: 100%;
+	}
+  
+	.message {
+	  font-size: 15px;
+	}
+  
+	.link-login {
+	  font-size: 13px;
+	}
+  
+  }
+  
+  @media (max-width: 480px) {
+  
+	.container-esq {
+	  padding: 25px 15px;
+	}
+  
+	.esq h2 {
+	  font-size: 22px;
+	}
+  
+	.esq p {
+	  font-size: 14px;
+	}
+  
+	.esq input {
+	  font-size: 14px;
+	}
+  
+	.esq button {
+	  font-size: 13px;
+	  padding: 11px;
+	}
+  
+  }

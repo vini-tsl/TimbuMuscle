@@ -22,7 +22,7 @@ def suporte(key):
         status='aberto'
     ).first()
     
-    return render_template("suporte.html", key=key, user=user, chamado_ativo=chamado_ativo)
+    return render_template("user/suporte.html", key=key, user=user, chamado_ativo=chamado_ativo)
 
 @suporte_bp.route('/api/criar-chamado', methods=['POST'])
 def criar_chamado():
@@ -83,7 +83,7 @@ def suporte_pro(key):
     if not user or user.tipo != 'profissional':
         return redirect(url_for('login'))
     
-    return render_template("suporte_profissional.html", key=key, user=user)
+    return render_template("admin/suporte_profissional.html", key=key, user=user)
 
 @suporte_bp.route('/api/chamados-profissional/<key>')
 def api_chamados_profissional(key):

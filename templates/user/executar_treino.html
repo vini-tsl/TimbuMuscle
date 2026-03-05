@@ -34,7 +34,19 @@
     </style>
 </head>
 <body>
-    <!-- Header igual aos outros templates -->
+    <header>
+        <nav>
+            <div class="nav-esquerda">
+                <h1>HelpMuscle</h1>
+                <a href="{{ url_for('usuarios.usuarios', key=key) }}">HOME</a>
+                <a href="{{ url_for('treinos.mostrar_treinos', key=key) }}">TREINOS</a>
+                <a href="{{ url_for('suporte.suporte', key=key) }}">SUPORTE</a>
+            </div>
+            <div class="nav-direita-normal">
+                <a href="{{ url_for('usuarios.perfil', key=key) }}">PERFIL</a>
+            </div>
+        </nav>
+    </header>
     
     <main>
         <div class="treino-em-execucao">
